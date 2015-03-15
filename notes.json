@@ -1,0 +1,102 @@
+[
+ {
+  "id": 0,
+  "title": "Resend to switch",
+  "notes": "Power Cycled the device\nresent to switch\nEnd Reg"
+ },
+ {
+  "id": 1,
+  "title": "xfer to ICC",
+  "notes": "referred cx to ICC"
+ },
+ {
+  "id": 2,
+  "title": "xfer to E-care",
+  "notes": "referred cx to E-care"
+ },
+ {
+  "id": 3,
+  "title": "xfer to Cable",
+  "notes": "xfer to Cable"
+ },
+ {
+  "id": 4,
+  "title": "xfer to highspeed",
+  "notes": "xfer to High Speed"
+ },
+ {
+  "id": 5,
+  "title": "Sim card",
+  "notes": "Activated SIm card as per cx's request\nmade sure new sim card is working fine"
+ },
+ {
+  "id": 6,
+  "title": "Setup Voice Mail",
+  "notes": "helped cx programmed Voice Mail retreival number\n-- made sure it is working "
+ },
+ {
+  "id": 7,
+  "title": "ended session",
+  "notes": "cx ended session"
+ },
+ {
+  "id": 8,
+  "title": "Closed chat",
+  "notes": "Closed session due to prolonged inactivity"
+ },
+ {
+  "id": 9,
+  "title": "Edu cx",
+  "notes": "edu cx"
+ },
+ {
+  "id": 10,
+  "title": "cx's on device",
+  "notes": "--cx is contacting from the same device \n-- advised cx to contact from different device \n-- cx will do that after"
+ },
+ {
+  "id": 11,
+  "title": "no troubleshooting",
+  "notes": "no troubleshooting was done"
+ },
+ {
+  "id": 12,
+  "title": "Unlocking",
+  "notes": "cx is wanting to unlock the device\n-- referred to ICC to do the unlocking "
+ },
+ {
+  "id": 13,
+  "title": "xfer to ESA",
+  "notes": "referred cx to ESA"
+ },
+ {
+  "id": 14,
+  "title": "Cannot leave Voice Mail ",
+  "notes": "-- no one can leave Voice Mail after the account change\n--Power Cycled the device\n--Resent to switch \n--End registration\n-- tested \n-- issue resolved"
+ },
+ {
+  "id": 15,
+  "title": "SMTP Port fix",
+  "notes": "Edu cx about smpt port fix"
+ },
+ {
+  "id": 16,
+  "title": "xfer to Mobile Internet",
+  "notes": "xfer to Mobile Internet"
+ },
+ {
+  "id": 17,
+  "title": "xfer to Home Phone",
+  "notes": "xfer to Home Phone"
+ },
+ {
+  "id": 18,
+  "title": "xfer to Techxpert",
+  "notes": "xfer to Techxpert"
+ },
+ {
+  "id": 19,
+  "title": "eHelp",
+  "notes": "sent ehelp"
+ }
+]

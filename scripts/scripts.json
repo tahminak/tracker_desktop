@@ -1,0 +1,941 @@
+{
+    "scripts": [
+        {
+            "id": 0,
+            "menuname": "General",
+            "submenus": [
+                {
+                    "submenuname": "Hello",
+                    "submenutitle": "Hello ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": " Greetings ENGLISH",
+                            "script": "Hello #CUST_NAME#, thank you for choosing Rogers Live Support. My Name is Moctar, how may I assist you today?"
+                        },
+                        {
+                            "scripttitle": " Greetings FRENCH",
+                            "script": "Bonjour  #CUST_NAME#, merci d'avoir choisi le Support  par Clavardage en ligne deRogers. Je m&#8217;appelle Moctar, comment puis-je vous aider?"
+                        }
+                    ]
+                },
+                {
+                    "submenuname": "Sorry + confirm",
+                    "submenutitle": "Sorry + confirm ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Sorry + confirm # E",
+                            "script": "I'm sorry to hear that you are having issues with your device. I can certainly help you with this. Please confirm that the wireless number and postal code entered prior to entering this service is for the device in question. [Yes/No]"
+                        },
+                        {
+                            "scripttitle": "Sorry + confirm # Fr",
+                            "script": "Je suis d&#233;sol&#233; d'apprendre que vous rencontrez des probl&#232;mes techniques avec votre appareil sans-fil. Je peux certainement vous aider avec ceci. S'il vous pla&#238;t confirmer que le num&#233;ro de t&#233;l&#233;phone  sans fil et le code postal entr&#233; avant d'entrer dans ce service est pour le dispositif en question. [Oui / Non]"
+                        }
+                    ]
+                },
+                {
+                    "submenuname": "I can assist + confirm",
+                    "submenutitle": "I can assist + confirm",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "I can assist + confirm # E",
+                            "script": "I can certainly help you with this. Please confirm that the wireless number and postal code entered prior to entering this service is for the device in question. [Yes/No]"
+                        },
+                        {
+                            "scripttitle": "I can assist + confirm # Fr",
+                            "script": "Je peux certainement vous aider avec ceci. S'il vous pla&#238;t confirmer que le num&#233;ro de t&#233;l&#233;phone  sans fil et le code postal entr&#233; avant d'entrer dans ce service est pour le dispositif en question. [Oui / Non]"
+                        }
+                    ]
+                }
+		,
+                {
+                    "submenuname": "I can assist + Form ",
+                    "submenutitle": "I can assist + Form ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "I can assist + Form  # English",
+                            "script": "I can certainly assist you with this issue.In order to ensure complete privacy, I will be pushing a form to you with the requested information. Your answers will not be saved or viewable once the window has been closed. You should see it open on your screen momentarily."
+                        },
+                        {
+                            "scripttitle": "I can assist + Form # French",
+                            "script": "Je peux certainement vous aider, puis-je s'il vous pla&#238;t v&#233;rifier votre num&#233;ro de sans-fil en question, le code postal sur le compte ainsi que le nom du titulaire du compte si diff&#233;rent de vous?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Form ",
+                    "submenutitle": "Form ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Form  # English",
+                            "script": "In order to ensure complete privacy, I will be pushing a form to you with the requested information. Your answers will not be saved or viewable once the window has been closed. You should see it open on your screen momentarily."
+                        },
+                        {
+                            "scripttitle": "Form # French",
+                            "script": "Afin d'assurer une confidentialit&#233; totale, je vais pousser un formulaire pour vous avec les informations demand&#233;es. Vos r&#233;ponses ne seront pas sauvegard&#233;s ou visible lorsque la fen&#234;tre a &#233;t&#233; ferm&#233;e. Vous devriez voir le formulaire ouvrir sur votre &#233;cran momentan&#233;ment."
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Sorry+Form ",
+                    "submenutitle": "Sorry+Form ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Sorry+Form  # English",
+                            "script": "Sorry to hear that, we can definitely look into the issue.In order to ensure complete privacy, I will be pushing a form to you with the requested information. Your answers will not be saved or viewable once the window has been closed. You should see it open on your screen momentarily"
+                        },
+                        {
+                            "scripttitle": "Sorry+Form  # French",
+                            "script": "Je suis d&#233;sol&#233; d'apprendre que vous rencontrez des probl&#232;mes techniques avec votre appareil sans-fil. Je peux certainement vous aider avec ceci.Afin d'assurer une confidentialit&#233; totale, je vais pousser un formulaire pour vous avec les informations demand&#233;es. Vos r&#233;ponses ne seront pas sauvegard&#233;s ou visible lorsque la fen&#234;tre a &#233;t&#233; ferm&#233;e. Vous devriez voir le formulaire ouvrir sur votre &#233;cran momentan&#233;ment."
+
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Hold check memo ",
+                    "submenutitle": "Hold check memo ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Hold check memo  # English",
+                            "script": "Thank you. Please give me a moment while I look up your account information."
+                        },
+                        {
+                            "scripttitle": "Hold check memo  # French",
+                            "script": "Je vous remercie. S'il vous pla&#238;t donnez-moi un instant pendant que je regarde vos informations de compte."
+
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Thank 4 hold & model  ",
+                    "submenutitle": "Thank 4 hold & model  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Thank 4 hold & model  English",
+                            "script": "Thank you for your patience. What is the model of your wireless device?"
+                        },
+                        {
+                            "scripttitle": "Thank 4 hold & model  French",
+                            "script": "Je vous remercie de votre patience. Quel est le mod&#232;le de votre appareil sans fil?"
+
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Apple. Thank 4 hold & model ",
+                    "submenutitle": "Apple. Thank 4 hold & model ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Apple. Thank 4 hold & model   English",
+                            "script": "Thank you for your patience. What is the model of your iPhone?  Is that the iPhone 3G, 3Gs or iPhone4 that you have?"
+                        },
+                        {
+                            "scripttitle": "Apple. Thank 4 hold & model   French",
+                            "script": "Je vous remercie de votre patience. Quel est le mod&#232;le de votre appareil sans fil? Est-ce que le iPhone 3G, 3GS ou iPhone4 que vous avez?"
+
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Issue?  ",
+                    "submenutitle": "Issue?  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Issue?  English",
+                            "script": "What are the technical difficulties that you are experiencing on your wireless device?"
+                        },
+                        {
+                            "scripttitle": "Issue?  French",
+                            "script": "Quelles sont les difficult&#233;s techniques que vous rencontrez sur votre appareil sans fil?"
+
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Issue in the past?   ",
+                    "submenutitle": "Issue in the past?   ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Issue in the past?   English",
+                            "script": "What was the issue that you were having on your wireless device?"
+                        },
+                        {
+                            "scripttitle": "Issue in the past?   French",
+                            "script": "Quel &#233;tait le probl&#232;me que vous aviez sur votre appareil sans fil?"
+
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Apology for your issue",
+                    "submenutitle": "Apology for your issue ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Apology for your issue  English",
+                            "script": "I do sincerely apologies for any inconvenience that this might have caused, you should not have had to go trough all this.  I will do my best to assist you as quickly as possible."
+                        },
+                        {
+                            "scripttitle": "Apology for your issue   French",
+                            "script": "Je pr&#233;sent sinc&#232;rement des excuses pour tout inconv&#233;nient que cela pourrait avoir caus&#233;, vous ne devriez pas avoir &#224; exp&#233;rimenter tout cela. Je ferai de mon mieux pour vous aider aussi "
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "U r welcome ",
+                    "submenutitle": "U r welcome  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "U r welcome   English",
+                            "script": "You are welcome #CUST_NAME#."
+                        },
+                        {
+                            "scripttitle": "U r welcome   French",
+                            "script": "Vous &#234;tes les bienvenus  "
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Welcome Cx name  ",
+                    "submenutitle": "Welcome Cx name  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Welcome Cx name   English",
+                            "script": "You are welcome."
+                        },
+                        {
+                            "scripttitle": "Welcome Cx name    French",
+                            "script": "Vous &#234;tes les bienvenus #CUST_NAME#."
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Any ?  ",
+                    "submenutitle": "Any ?  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Any ? English",
+                            "script": "Is there anything else I can assist you with? "
+                        },
+                        {
+                            "scripttitle": "Any?  French",
+                            "script": "Y at-il autre chose que je peux vous aider avec?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Hold investigation ",
+                    "submenutitle": "Hold investigation ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Hold investigation English",
+                            "script": "Would you please give me for a moment while I look further on your account regarding this matter? "
+                        },
+                        {
+                            "scripttitle": "Hold investigation  French",
+                            "script":   "Veillez s'il vous pla&#238;t me donner un instant pendant que je regarde plus loin sur votre compte &#224; ce sujet?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "THX 4 Hold  ",
+                    "submenutitle": "THX 4 Hold ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "THX 4 Hold English",
+                            "script": "Thank you for waiting "
+                        },
+                        {
+                            "scripttitle": "THX 4 Hold  French",
+                            "script":   "Merci d'avoir attendu."
+                        }
+                    ]
+                }
+
+
+,
+                {
+                    "submenuname": "Welcome CX& any  ",
+                    "submenutitle": "Welcome CX& any  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Welcome CX& any English",
+                            "script": "You are welcome #CUST_NAME#, is there anything else that I may help you with today?"
+                        },
+                        {
+                            "scripttitle": "Welcome CX& any  French",
+                            "script": "Vous &#234;tes les bienvenus #CUST_NAME#,  Y at-il autre chose que je peux vous aider avec? "
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Welcome & End ",
+                    "submenutitle": "Welcome & End ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Welcome & End  English",
+                            "script": "You’re welcome and thank you for choosing Rogers Live Chat Support. Please feel free to contact us again if you need any further assistance at http://rogershelp.com/btsc we operate 24/7.  You may end this session by clicking on the End Session button."
+                        },
+                        {
+                            "scripttitle": "Welcome & End   French",
+                            "script": "Vous &#234;tes les bienvenus et nous vous remercions d'avoir choisi le  soutien par Clavardage en Ligne de Rogers. S'il vous pla&#238;t, n'h&#233;sitez pas &#224; nous recontacter si vous avez besoin d'aide suppl&#233;mentaire &#224; l'adresse: http://rogershelp.com/livesupport-v6/index-fr-1.php?queueID=8  et 24 / 7.\n\nVous pouvez mettre fin &#224; cette session en cliquant sur le bouton Fin de Session."
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "One moment for investigation ",
+                    "submenutitle": "One moment for investigation   ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "One moment for investigation   English",
+                            "script": "Please bear with me one moment while I look further on your account regarding this matter."
+                        },
+                        {
+                            "scripttitle": "One moment for investigation    French",
+                            "script": "S'il vous pla&#238;t restez avec moi un instant pendant que je regarde plus loin sur votre compte &#224; ce sujet. "
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Troubleshooting education and USB cord?",
+                    "submenutitle": "Troubleshooting education and USB cord? ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Troubleshooting education and USB cord?   English",
+                            "script": " In order to troubleshoot on your issue we require that you have both your device and the USB cord ready. I might also ask you to perform some tasks.  Is that Okay with you to proceed?"
+                        },
+                        {
+                            "scripttitle": "Troubleshooting education and USB cord?  French",
+                            "script": "Afin de d&#233;panner le probl&#232;me sur votre appareil, nous exigeons que vous avez &#224; la fois votre appareil et le cordon USB pr&#234;t.Je pourrais aussi vous demander d'effectuer certaines t&#226;ches. Etes vous d'accord pour proc&#233;der?"
+                        }
+                    ]
+                }
+
+
+
+            ]
+        },
+         {
+            "id": 1,
+            "menuname": "Transfer",
+            "submenus": [
+                {
+                    "submenuname": "E-Care ",
+                    "submenutitle": "E-Care ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": " E-Care ENGLISH",
+                            "script": "I apologize for the inconvenience but we support technical related issue and any My5/10, Rogers online account inquiries or Rogers.com support are handled by contacting our E-Care via Echat at: _ HYPERLINK 'http://www.rogershelp.com/chat' __http://www.rogershelp.com/chat_"
+                        },
+                        {
+                            "scripttitle": " E-Care FRENCH",
+                            "script": "Je m'excuse pour la g&#234;ne occasionn&#233;e mais nous sommes seulement au Soutien Technique pour les appareil Sans-Fill et tout support concernant le compte de la facturation en ligne, Mon Top5/10 sont trait&#233;es en contactant notre departement E-Care au : _ HYPERLINK \"http://www.rogershelp.com/chat\" __http://www.rogershelp.com/chat_"
+                        }
+                    ]
+                },
+                {
+                    "submenuname": "E-Care explain ",
+                    "submenutitle": "E-Care explain  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "E-Care explain  English",
+                            "script": "I would love to assist you with your online account, but unfortunately  you have not reached the correct E-chat and to better assist you, please contact our E-care support group that support any issue you may have with your online account."
+                        },
+                        {
+                            "scripttitle": "E-Care explain  French",
+                            "script": "J'aimerais vous aider avec votre compte en ligne, mais malheureusement vous n'avez pas atteint le bon département et pour mieux vous aider, s'il vous plaît communiquer avec notre groupe de soutien en ligne, E-care pour répondre à toute question que vous pourriez avoir avec votre "
+                        }
+                    ]
+                }
+
+			,
+                {
+                    "submenuname": "E-Care  pw reset",
+                    "submenutitle": "E-Care  pw reset",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "E-Care  pw reset  English",
+                            "script": "I apologize for the inconvenience but we support technical related issue and any Rogers.com troubleshooting is handled by contacting e-care at: _ HYPERLINK \"http://www.rogershelp.com/chat\" __http://www.rogershelp.com/chat_I may be able to reset the Password for you, please give me a moment."
+                        },
+                        {
+                            "scripttitle": "E-Care  pw reset  French",
+                            "script": " Je m'excuse pour la g&#234;ne occasionn&#233;e mais nous sommes seulement au Soutien Technique pour les appareil Sans-Fill et tout support concernant  le site Rogers.com est trait&#233;e en contactant E-Care &#224; l'adresse: http://www.rogershelp.com/chat . Je suis  peut-&#234;tre en mesure de r&#233;initialiser le mot de passe pour vous, s'il vous pla&#238;t donnez-moi un instant. "
+                        }
+                    ]
+                }
+		,
+                {
+                    "submenuname": "Transfer-Cable ",
+                    "submenutitle": "Transfer-Cable ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Transfer-Cable  English",
+                            "script": "I apologize for the inconvenience but we support technical related issue and any Rogers.com troubleshooting is handled by contacting e-care at: _ HYPERLINK \"http://www.rogershelp.com/chat\" __http://www.rogershelp.com/chat_I may be able to reset the Password for you, please give me a moment."
+                        },
+                        {
+                            "scripttitle": "Transfer-Cable  French",
+                            "script": " Je m'excuse pour la g&#234;ne occasionn&#233;e mais nous sommes au Soutien Technique cellulaire sans fil et nous ne sommes pas form&#233;s &#224; a supporter les services Internet Haute Vitesse / t&#233;l&#233;phone r&#233;sidentiel / Routeurs sans fil (WI-FI) ou le Courriel E-mail de Rogers.Pour de l'aide avec vos Services, veillez s'il vous pla&#238;t communiquer avec notre Soutien Technique de C&#226;ble en Anglais au site: _ HYPERLINK \"http://www.echat.rogers.com\" __www.echat.rogers.com_ ou en Francais, d&#8217;appeler au: 1-888-764-3771 "
+                        }
+                    ]
+                }
+
+		,
+                {
+                    "submenuname": "Business acct trx ",
+                    "submenutitle": "Business acct trx  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Business acct trx  English",
+                            "script": "I apologize for the inconvenience but we do not  provide support for Business / Corporate Accounts and to better assist you, I will recommend to contact the Rogers Business Support Group directly at: 1-866-727-2141"
+                        },
+                        {
+                            "scripttitle": "Business acct trx  French",
+                            "script": "Je m'excuse pour la g&#234;ne occasionn&#233;e, mais malheureusement nous ne fournissons pas de support pour les comptes d'entreprise / corporatif et pour mieux vous aider, veillez s'il vous pla&#238;t contacter le Groupe de Support des comptes corporattifs directement au: 1-866-727-2141"
+                        }
+                    ]
+                }
+		,
+                {
+                    "submenuname": "DICC  ",
+                    "submenutitle": "DICC ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "DICC English",
+                            "script": "I apologize for the inconvenience but we support technical related issue and any Price Plan, Contract, Billing or account changes are handled by contacting Customer Care at 1-888-764-3771."
+                        },
+                        {
+                            "scripttitle": "DICC  French",
+                            "script": "Je suis d&#233;sol&#233; pour le d&#233;sagr&#233;ment mais nous sommes au Support Technique des apparel Sans-Fil et les changements li&#233;s aux forfaits, Contrat, Mon Top 5/10, la facturation ou de compte sont trait&#233;es en appellant le Service &#224; la client&#232;le au 1-888-764-3771"
+                        }
+                    ]
+                }
+		,
+                {
+                    "submenuname": "BB wrong plan DICC",
+                    "submenutitle": "BB wrong plan DICC",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "BB wrong plan DICC  English",
+                            "script": "Thank you for waiting, unfortunately you do only have a ( )  for a different Smartphone, however this plan does not have Blackberry Internet Service (BIS) services.To better assist you with getting the correct Blackberry Data Plan, would you please contact Customer Care at 1-888-764-3771."
+                        },
+                        {
+                            "scripttitle": "BB wrong plan DICC  French",
+                            "script": "Merci d'avoir attendu, malheureusement le forfait actuel que vous avez ( ) est pour un Appareil intelligent diff&#233;rent et ce plan n&#8217;est pas compatible avec les Blackberry.Afin de mieux vous aider &#224; obtenir le bon forfait de Donn&#233;es pour Blackberry, veillez s'il vous pla&#238;t communiquer avec le Service &#224; la client&#232;le au 1-888-764-3771."
+                        }
+                    ]
+                }
+		,
+                {
+                    "submenuname": "Pre-Paid ",
+                    "submenutitle": "Pre-Paid ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Pre-Paid  English",
+                            "script": "I am sorry, you have reached the wireless cellular technical support department and we do not have access view the Prepaid billing account or to make changes to your account. To better assist you, you will need to contact our Pay-As-You Go Customer Care at 1-866-594-9456.\nPrepaid Customer service hours are:\nMon-Fri 8am - 9pm\nSat 8am - 6pm\nSun 10am-6pm\nTo recharge, please call: 1-800-575-9090"
+                        },
+                        {
+                            "scripttitle": "Pre-Paid French",
+                            "script": "Malheureusement vous avez atteint le d&#233;partement Soutien Technique des Cellulaires Sans-fil et nous n'avons pas acc&#232;s &#224; votre compte de facturation pr&#233;pay&#233;e ou d'apporter des modifications &#224; votre compte.Pour mieux vous aider, vous devrez prendre contact avec notre d&#233;partement Payer a la Carte au : 1-866-594-9456.Les heures de service &#224; la client&#232;le Pr&#233;pay&#233;es sont les suivants:\nDu lundi au vendredi 8 heures-21 heures\nSam. 8 heures-18 heures\nDim. 10 heures-18 heures\nPour recharger, s'il vous pla&#238;t appelez: 1-800-575-9090"
+                        }
+                    ]
+                }
+
+	,
+                {
+                    "submenuname": "Roaming Trx ",
+                    "submenutitle": "Roaming Trx ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Roaming Trx  English",
+                            "script": "I apologize for the inconvenience but we support technical related issue and any Roaming, Travel pack, Account inquiry is handled by contacting Customer Care at 1-888-764-3771.Please be aware that once you are Outside of Canada (Rogers Network), you will incur usage based charges, means excessive roaming charges unless you have a roaming plan.  You can also review all roaming plans at: _HYPERLINK \"www.rogers.com/roaming\"__www.rogers.com/roaming_\n\nYou can count on Rogers Wireless Customer Service for assistance and support if you need it from any Country and from your Rogers Wireless device, just dial free of charge: +1-514-734-7699 from USA: 1 877-764-3772"
+                        },
+                        {
+                            "scripttitle": "Roaming Trx  French",
+                            "script": "Je m'excuse pour la g&#234;ne occasionn&#233;e mais nous sommes au Soutien Technique cellulaire sans fil et de toute question li&#233;e au Service Itin&#233;rance, Trousse Voyage, toute question a propos de votre compte est g&#233;r&#233; en contactant le Service &#224; la client&#232;le au 1-888-764-3771.\n\nS'il vous pla&#238;t &#234;tre conscient qu'une fois que vous &#234;tes l'ext&#233;rieur du Canada (R&#233;seau Rogers), vous allez accumuler  des frais d'itin&#233;rance excessifs en fonction d'utilisation, sauf si vous avez un forfait d'itin&#233;rance.\n\nVous pouvez &#233;galement consulter tous les forfaits d'itin&#233;rance &#224; l'adresse: _HYPERLINK \"www.rogers.com/roaming\"__www.rogers.com/roaming_\n\nVous pouvez compter sur le service client&#232;le de Rogers pour de l'aide et de soutien si vous en avez besoin de n'importe quel pays et a partir de votre appareil Sans-fil de Rogers, composez sans frais: +1-514-734-7699 et a partir des Etats-Unis:1 877-764-3772"
+                        }
+                    ]
+                }
+
+		
+		,
+                {
+                    "submenuname": "Track & Trace  ",
+                    "submenutitle": "Track & Trace  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Track & Trace   English",
+                            "script": "I apologize for the inconvenience but we are in the Wireless Technical Support department and for the status of the order / replacement or to Track your package are handled by contacting our Track and Trace department at toll free: 1-800-704-2474. \nI do apologize for the inconvenience.\n\nThe hours of operations are:\nMon-Fri 8am - 11pm\nSat 9am - 11pm\nSun 11am - 10pm"
+                        },
+                        {
+                            "scripttitle": "Track & Trace French",
+                            "script":   "Je m'excuse pour la g&#234;ne occasionn&#233;e mais nous sommes dans le d&#233;partement de soutien technique sans fil et pour le statut de la commande / de remplacement ou de suivre votre colis sont manipul&#233;s en contactant notre service Track & Trace Sans frais au: 1-800-704-2474. \n\nJe suis d&#233;sol&#233; pour le d&#233;rangement.\n\nLes heures d'op&#233;rations sont les suivantes:\nDu lundi au vendredi 8 heures-23 heures\nSam. 9 heures-23 heures\nDim 11am - 22:00"
+                        }
+                    ]
+                }
+	
+		,
+                {
+                    "submenuname": "Any",
+                    "submenutitle": "Any ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Any English",
+                            "script": " Is there anything else I can assist you with? "
+                        },
+                        {
+                            "scripttitle": "Any French",
+                            "script":   " Y at-il autre chose que je peux vous aider avec?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Hold investigation ",
+                    "submenutitle": "Hold investigation ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Hold investigation English",
+                            "script": "Would you please give me for a moment while I look further on your account regarding this matter? "
+                        },
+                        {
+                            "scripttitle": "Hold investigation  French",
+                            "script":   "Veillez s'il vous pla&#238;t me donner un instant pendant que je regarde plus loin sur votre compte &#224; ce sujet?"
+                        }
+                    ]
+                }
+
+	,
+                {
+                    "submenuname": "Wel&End ",
+                    "submenutitle": "Wel&End  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Wel&End  English",
+                            "script": " You’re welcome and thank you for choosing Rogers Live Chat Support. You may end this session by clicking on the End Session button. "
+                        },
+                        {
+                            "scripttitle": "Wel&End French",
+                            "script":   "Vous &#234;tes les bienvenus et nous vous remercions d'avoir choisi le  soutien par Clavardage en Ligne de Rogers. Vous pouvez mettre fin &#224; cette session en cliquant sur le bouton Fin de Session."
+                        }
+                    ]
+                }
+
+	,
+                {
+                    "submenuname": "Tank&End  ",
+                    "submenutitle": "Tank&End   ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Tank&End  English",
+                            "script": " Thank you for your patience and thank you for choosing Rogers Live Chat Support. You may end this session by clicking on the End Session button."
+                        },
+                        {
+                            "scripttitle": "Tank&End  French",
+                            "script":   "Je vous remercie de votre patience et nous vous remercions d'avoir choisi le  soutien par Clavardage en Ligne de Rogers. Vous pouvez mettre fin &#224; cette session en cliquant sur le bouton Fin de Session."
+                        }
+                    ]
+                }
+
+
+
+
+
+
+            ]
+        }
+        ,
+         {
+            "id": 2,
+            "menuname": "Blackberry",
+            "submenus": [
+                {
+                    "submenuname": "OS to solve issue  ",
+                    "submenutitle": "OS to solve issue  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "OS to solve issue  ENGLISH",
+                            "script": "We can certainly resolve your issue by re-installing the Operating System on your device, however the Software reload requires to delete any third party installed application (Apps) from the device and this will restore the device to the Manufacture original Settings. We will be able to backup your device to save your information.Is that okay to proceed?"
+                        },
+                        {
+                            "scripttitle": "OS to solve issue  FRENCH",
+                            "script": "Nous pouvons certainement r&#233;soudre votre probl&#232;me en r&#233;installant le syst&#232;me d'exploitation sur votre appareil, mais le rechargement du logiciel n&#233;cessite de supprimer les applications (Apps) Troisi&#232;me partie install&#233;es sur l'appareil et ce sera de r&#233;initialiser l'appareil aux param&#232;tres de fabrication originale. Nous serons en mesure de sauvegarder votre appareil pour enregistrer vos informations.Est-ce que &#231;a va pour continuer?"
+                        }
+                    ]
+                },
+                {
+                    "submenuname": "JVM error OS to solve issue",
+                    "submenutitle": "JVM error OS to solve issue ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "JVM error OS to solve issue  English",
+                            "script": "In an event when the phone does not turn on, stays on connecting and never connects to the computer, or is completely frozen, or if you have a JVM Error/App error; these are Fatal Software Errors and I will not be able to backup of your device. However, to fix the issue we can reload the software / Operating System on your device for you. Reloading the software will wipe your personal data on the device memory and take the device to the factory settings and will wipe the entire blackberry to fix the issue.Is that okay to proceed?"
+                        },
+                        {
+                            "scripttitle": "JVM error OS to solve issue  French",
+                            "script": "Dans un &#233;v&#233;nement lorsque le t&#233;l&#233;phone ne s'allume pas, reste sur le mode connexion en cours et ne se connecte jamais &#224; l'ordinateur, ou est compl&#232;tement gel&#233;, ou si vous avez une erreur JVM / App erreur; ce sont des erreurs de logiciel fatale et je ne serai pas en mesure de sauvegarder votre appareil. Cependant, pour r&#233;soudre le probl&#232;me, nous pouvons recharger le logiciel / syst&#232;me d'exploitation sur votre appareil pour vous.Le rechargement du logiciel effacera vos donn&#233;es personnelles sur la m&#233;moire de l'appareil et de r&#233;initialiser l'appareil aux param&#232;tres de fabrication originale et effacera toutes les donn&#233;es sur le BlackBerry pour r&#233;soudre le probl&#232;me.Est-ce que &#231;a va pour continuer?"           
+				}
+                    ]
+                },
+                {
+                    "submenuname": "White screen/uncaught excpt OS to solve issue ",
+                    "submenutitle": "White screen/uncaught excpt OS to solve issue ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "White screen/uncaught excpt OS to solve issue English",
+                            "script": "In an event when the screen is white / has uncaught exception error; these are Fatal Software Errors and we may or may not be able to backup of your device. However, to fix the issue we can reload the software / Operating System on your device for you. Reloading the software may wipe your personal data on the device memory depending on the severity of this issue, we may or may not be able to save your information from the device and you may loose all contacts and any other data on the device and take the device to the factory settings and will wipe the entire blackberry to fix the issue.Is that okay to proceed?"
+                        },
+                        {
+                            "scripttitle": "White screen/uncaught excpt OS to solve issue French",
+                            "script": "Dans un &#233;v&#233;nement lorsque l'&#233;cran est blanc / a d'erreur exception non intercept&#233;e (uncaught exception), ce sont des erreurs de logiciel Fatales et on peut ou peut ne pas &#234;tre en mesure de sauvegarde de votre appareil.. Cependant, pour r&#233;soudre le probl&#232;me, nous pouvons recharger le logiciel / syst&#232;me d'exploitation sur votre appareil pour vous.Le rechargement du peut effacer vos donn&#233;es personnelles sur la m&#233;moire de l'appareil en fonction de la gravit&#233; de ce probl&#232;me, nous pouvons ou ne pas &#234;tre en mesure d'enregistrer vos informations de l'appareil et vous pouvez perdre tous les contacts et autres donn&#233;es sur le p&#233;riph&#233;rique et de r&#233;initialiser l'appareil aux param&#232;tres de fabrication originale et effacera toutes les donn&#233;es sur le BlackBerry pour r&#233;soudre le probl&#232;me.Est-ce que vous &#234;tes d&#8217;accord pour continuer?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "D.M? ",
+                    "submenutitle": "D.M? ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "D.M?  English",
+                            "script": "This process may exceed an hour depending on the speed of your  Internet and CPU.Do you have Blackberry Desktop Manager/Software installed on your Computer?"
+                        },
+                        {
+                            "scripttitle": "D.M?  French",
+                            "script": "Ce processus peut d&#233;passer une heure selon la vitesse de votre connexion Internet et de la CPU.Avez-vous le logiciel de bureau BlackBerry Desktop Manager/Software install&#233;s sur votre ordinateur?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Remote access request ",
+                    "submenutitle": "Remote access request ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Remote access request  English",
+                            "script": "I would like to take a look at this first-hand. To better assist you with this issue, with your permission I would like to log on to your PC and perform some tasks remotely. Do you authorize me to use desktop sharing to log on to your PC for troubleshooting purposes?If yes, Please close all applications prior to me viewing your desktop to avoid viewing any confidential information."
+                        },
+                        {
+                            "scripttitle": "Remote access request French",
+                            "script": "Je  voudrai tout d&#8217;abord v&#233;rifier le probl&#232;me pour vous.  Afin de mieux vous aider avec ce processus, avec votre permission, e voudrais acc&#233;der &#224; distance votre Ordinateur et effectuer certaines t&#226;ches. M'autorisez vous &#224; utiliser le partage de bureau de se connecter &#224; votre PC &#224; fin de proceder avec ce d&#233;pannage?Si oui, S'il vous pla&#238;t fermer toutes vos applications ouvertes sur votre bureau afin d'&#233;viter toute visualisation des informations confidentielles."
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Connect device ",
+                    "submenutitle": "Connect device ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Connect device  English",
+                            "script": "Can you please connect your Blackberry Device to the PC using the USB cord?"
+                        },
+                        {
+                            "scripttitle": "Connect device French",
+                            "script": "Pouvez-vous s'il vous pla&#238;t connectez votre terminal BlackBerry &#224; l'ordinateur via le cordon USB?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Disconnect device  ",
+                    "submenutitle": "Disconnect device  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Disconnect device  English",
+                            "script": "Can you please unplug the device?"
+                        },
+                        {
+                            "scripttitle": "Disconnect device French",
+                            "script": "Pouvez-vous s'il vous pla&#238;t d&#233;brancher l'appareil?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Reconnect device  ",
+                    "submenutitle": "Reconnect device ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Reconnect device  English",
+                            "script": "Can you please reconnect the Blackberry device?"
+                        },
+                        {
+                            "scripttitle": "Reconnect device French",
+                            "script": "Pouvez-vous s'il vous pla&#238;t r&#233;ins&#233;rez la batterie ?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "PW Cycl BB connected ",
+                    "submenutitle": "PW Cycl BB connected  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "PW Cycl BB connected English",
+                            "script": "Can you please remove and reinsert the battery with the device connected to your Computer?"
+                        },
+                        {
+                            "scripttitle": "PW Cycl BB connected  French",
+                            "script": "Pouvez-vous s'il vous pla&#238;t retirer et r&#233;ins&#233;rer la batterie avec le p&#233;riph&#233;rique connect&#233; &#224; votre ordinateur?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Battery OUT bb connected  ",
+                    "submenutitle": "Battery OUT bb connected  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Battery OUT bb connected English",
+                            "script": "Can you please remove the battery from the device while connected to your Computer?"                        },
+                        {
+                            "scripttitle": "Battery OUT bb connected  French",
+                            "script": "Pouvez-vous s'il vous pla&#238;t retirer la batterie de l'appareil lorsqu'il est connect&#233; &#224; votre ordinateur?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Battery IN bb connected ",
+                    "submenutitle": "Battery IN bb connected ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Battery IN bb connected English",
+                            "script": "Can you please reinsert the battery back in, while the device is connected?"                        },
+                        {
+                            "scripttitle": "Battery IN bb connected  French",
+                            "script": "Pouvez-vous s'il vous pla&#238;t r&#233;ins&#233;rez la batterie &#233;tant connecter?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Download D.M & HH code permission  ",
+                    "submenutitle": "Download D.M & HH code permission  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Download D.M & HH code permission  English",
+                            "script": "We will now download and install both the Desktop and the Blackberry Smartphone Software.Is that okay with you to proceed?"                        },
+                        {
+                            "scripttitle": "Download D.M & HH code permission   French",
+                            "script": "Nous allons maintenant t&#233;l&#233;charger et installer le Logiciel de Bureau et le logiciel du Syst&#232;me d'exploitation de votre appareil.&#202;tes-vous d'accord pour proc&#233;der?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Download HH code permission  ",
+                    "submenutitle": "Download HH code permission ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Download HH code permission  English",
+                            "script": "The device software is required to complete the process, I will now download the file from RIM website. Is that okay with you to proceed?"                        },
+                        {
+                            "scripttitle": "Download HH code permission  French",
+                            "script": "Le logiciel du p&#233;riph&#233;rique est n&#233;cessaire pour compl&#233;ter le processus, je vais maintenant t&#233;l&#233;charger le fichier sur le site de RIM.&#202;tes-vous d'accord pour proc&#233;der?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "Backup permission  ",
+                    "submenutitle": "Backup permission ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Backup permission English",
+                            "script": "Please note that we are required to backup your device data even if you already backup or not to ensure that your data is saved."                        },
+                        {
+                            "scripttitle": "Backup permission French",
+                            "script": "S'il vous pla&#238;t noter que nous sommes tenus de sauvegarder vos donn&#233;es de l'appareil, m&#234;me si vous l&#8217;avez d&#233;j&#224;  d&#233;j&#224; faites ou non assurer que vos donn&#233;es sont sauvegard&#233;es."
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Backup education for OS  ",
+                    "submenutitle": "Backup education for OS  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Backup education for OS  English",
+                            "script": "The Operating System reload will reset the device back to factory settings and we are now creating a backup file to your Document Folder.  It is very important NOT TO MOVE or DELETE the backup file until we restore it back to your wireless device."                        },
+                        {
+                            "scripttitle": "Backup education for OS French",
+                            "script": "Le rechargement du syst&#232;me d'exploitation va r&#233;initialiser l'appareil aux r&#233;glages d'usine, et nous sommes en train de cr&#233;er un fichier de sauvegarde de votre Dossier Documents.Il est tr&#232;s important de ne pas d&#233;placer ou supprimer le fichier de sauvegarde jusqu'&#224; ce que nous puissions restaurer vos donn&#233;es dans votre dispositif sans fil."
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Will not backup due to error education   ",
+                    "submenutitle": "Will not backup due to error education  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Will not backup due to error education   English",
+                            "script": "Do you have the data (Contacts and all the rest of your information) from your device Backed up? If not unfortunately, we might not be able to save your information, due to this error on the device and all of your information are or will be erased from the device."                        },
+                        {
+                            "scripttitle": "Will not backup due to error education  French",
+                            "script": "Avez-vous les donn&#233;es (contacts et tout le reste de vos informations personnelles)de votre appareil sauvegard&#233;s? Si non, malheureusement, nous ne sommes pas en mesure d'enregistrer vos informations, en raison de cette erreur sur l'appareil et toutes vos informations seront effac&#233;es de l'appareil."
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "Language choices ",
+                    "submenutitle": "Language choices  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Language choices    English",
+                            "script": "Beside English/French, is there any other language that you would like to have on your device?"                        },
+                        {
+                            "scripttitle": "Language choices   French",
+                            "script": "A part Francais / Anglais y'a t'il d'autre langues que vous aimeriez avoir sur votre appareil?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "OS-Selective restore  ",
+                    "submenutitle": "OS-Selective restore   ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "OS-Selective restore    English",
+                            "script": "This process will take 30 to 45 minutes depending on the speed of your CPU to complete.  At this point we can only wait until the reload has been completed fully. Do not disconnect the USB or device until it has reached the end. Once complete Desktop Manager will indicate that the reload is completed successfully, please test to make sure that your device is running to your satisfaction and please come back to chat so we can do a manual restore of your information you can reach us at www.wireless.rogers.com. \n\nIf the device fails then we have to look at exchanging it depending on its warranty status. Please log back into chat once the process is completed.Is there anything else that I may help you with today?"                        },
+                        {
+                            "scripttitle": "OS-Selective restore   French",
+                            "script": "Ce processus prendra 30 &#224; 45 minutes selon la vitesse de votre CPU pour compl&#233;ter. A ce stade nous ne pouvons attendre que le rechargement est termin&#233; compl&#232;tement. Ne d&#233;connectez pas le p&#233;riph&#233;rique ou le cordon USB jusqu'&#224;  la fin. Une fois compl&#232;te  Le logiciel de bureau indiquera que le rechargement est termin&#233; avec succ&#232;s. s'il vous pla&#238;t testez pour s'assurer que votre appareil fonctionne &#224; votre satisfaction et revenir  afin que nous puissions faire une restauration manuelle de vos informations, vous pouvez nous joindre &#224; l'adresse:http://rogershelp.com/livesupport-v6/index-fr-1.php?queueID=8'appareil &#233;choue, nous allons v&#233;rifieront le statut de la garantie et remplacer le dispositif si couvert\n\nY at-il autre chose que je peux vous aider avec?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "OS-Loader.exe-Selective restore   ",
+                    "submenutitle": "OS-Loader.exe-Selective restore   ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "OS-Loader.exe-Selective restore     English",
+                            "script": "This process will take 30 to 45 minutes depending on the speed of your CPU to complete.  At this point we can only wait until the reload has been completed fully. Do not disconnect the USB or device until it has reached the end. Once complete Desktop Manager will indicate that the reload is completed successfully, then the device will take up to 20 minutes to turn on.  Please test to make sure that your device is running to your satisfaction and please come back to chat so we can do a manual restore of your information you can reach us at www.wireless.rogers.com. \n\nIf the device fails then we have to look at exchanging it depending on its warranty status. Please log back into chat once the process is completed.\n\nIs there anything else that I may help you with today?"                        },
+                        {
+                            "scripttitle": "OS-Loader.exe-Selective restore  French",
+                            "script": "Ce processus prendra 30 &#224; 45 minutes selon la vitesse de votre CPU pour compl&#233;ter. A ce stade nous ne pouvons attendre que le rechargement est termin&#233; compl&#232;tement. Ne d&#233;connectez pas le p&#233;riph&#233;rique ou le cordon USB jusqu'&#224;  la fin. Une fois compl&#232;te  Le logiciel de bureau indiquera que le rechargement est termin&#233; avec succ&#232;s, ensuite le dispositif prendra environ 20 minutes pour etre en marche s'il vous pla&#238;t testez pour s'assurer que votre appareil fonctionne &#224; votre satisfaction et revenir  afin que nous puissions faire une restauration manuelle de vos informations, vous pouvez nous joindre &#224; l'adresse:http://rogershelp.com/livesupport-v6/index-fr-1.php?queueID=8\n\nSi l'appareil &#233;choue, nous allons v&#233;rifieront le statut de la garantie et remplacer le dispositif si  couvert\n\nY at-il autre chose que je peux vous aider avec?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "OS-Lost data unable to backup    ",
+                    "submenutitle": "OS-Lost data unable to backup   ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "OS-Lost data unable to backup   English",
+                            "script": "This process will take up to 30-45 minutes depending on the speed of your CPU to complete.  At this point we can only wait until the reload has been completed fully. Do not disconnect the USB or device until it has reached the end. Once complete Desktop Manager will indicate that the reload is completed successfully, please test to make sure that your device is running to your satisfaction and and if there is any issue, please reconnect back to us, you can reach us at www.wireless.rogers.com. If the device fails then we have to look at exchanging it depending on its warranty status. \n\nIs there anything else that I may help you with today?\n\nDesktop Manager will first indicate that the reload is completed successfully and then you will see an hourglass on the screen of your device that might take several minutes.Once complete the device will prompt you to the Setup Wizard and then test to make sure that the Blackberry Smartphone is running to your satisfaction and if there is any issue, please reconnect back to us, you can reach us at www.wireless.rogers.com. If the device fails then we have to look at exchanging it depending on its warranty status. \nIs there anything else that I may help you with today?"                        },
+                        {
+                            "scripttitle": "OS-Lost data unable to backup   French",
+                            "script": "Ce processus prendra 30 à 45 minutes selon la vitesse de votre CPU pour compléter. A ce stade nous ne pouvons attendre que le rechargement est terminé complètement. Ne déconnectez pas le périphérique ou le cordon USB jusqu'à  la fin. Une fois complète  Le logiciel de bureau indiquera que le rechargement est terminé avec succès,  s'il vous plaît testez pour s'assurer que votre appareil fonctionne à votre satisfaction et et si vous avez des difficultés, vous pouvez nous joindre à l'adresse:http://rogershelp.com/livesupport-v6/index-fr-1.php?queueID=8\n\nSi l'appareil échoue, nous allons vérifieront le statut de la garantie et remplacer le dispositif si  couvert\n\nY at-il autre chose que je peux vous aider avec?"
+                        }
+                    ]
+                }
+,
+                {
+                    "submenuname": "BIS auth  ",
+                    "submenutitle": "BIS auth ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "BIS auth  English",
+                            "script": " May I please verify your email address that is currently on your Blackberry device to ensure that I am accessing the right Blackberry Internet Service (BIS) account?"                        },
+                        {
+                            "scripttitle": "BIS auth French",
+                            "script": "Puis je s'il vous plaît vérifier votre adresse e-mail qui est actuellement sur ??votre terminal BlackBerry pour s'assurer que je vai accèder le bon compte de Service Internet BlackBerry (BIS)?"
+                        }
+                    ]
+                }
+
+,
+                {
+                    "submenuname": "OS-Loader- Lost data unable to backup     ",
+                    "submenutitle": "OS-Loader- Lost data unable to backup  ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "OS-Loader- Lost data unable to backup  English",
+                            "script": " This process will take up to 30-45 minutes depending on the speed of your CPU to complete.  At this point we can only wait until the reload has been completed fully. Do not disconnect the USB or device until it has reached the end. Desktop Manager will first indicate that the reload is completed successfully and then the device will take up to 20 minutes to turn on.Once complete the device will prompt you to the Setup Wizard and then test to make sure that the Blackberry Smartphone is running to your satisfaction and if there is any issue, please reconnect back to us, you can reach us at www.wireless.rogers.com. If the device fails then we have to look at exchanging it depending on its warranty status. \n\nIs there anything else that I may help you with today?"                        },
+                        {
+                            "scripttitle": "OS-Loader- Lost data unable to backup   French",
+                            "script": "Ce processus prendra 30 &#224; 45 minutes selon la vitesse de votre CPU pour compl&#233;ter. A ce stade nous ne pouvons attendre que le rechargement est termin&#233; compl&#232;tement. Ne d&#233;connectez pas le p&#233;riph&#233;rique ou le cordon USB jusqu'&#224;  la fin. Une fois compl&#232;te  Le logiciel de bureau indiquera que le rechargement est termin&#233; avec succ&#232;s, ensuite le dispositif prendra environ 20 minutes pour etre en marche s'il vous pla&#238;t testez pour s'assurer que votre appareil fonctionne &#224; votre satisfaction et et si vous avez des difficult&#233;s, vous pouvez nous joindre &#224; l'adresse:http://rogershelp.com/livesupport-v6/index-fr-1.php?queueID=8\n\nSi l'appareil &#233;choue, nous allons v&#233;rifieront le statut de la garantie et remplacer le dispositif si  couvert\n\nY at-il autre chose que je peux vous aider avec?"
+                        }
+                    ]
+                }
+
+
+
+
+            ]
+        },
+
+	{
+            "id": 3,
+            "menuname": "Apple",
+            "submenus": [
+               
+                {
+                    "submenuname": "Apple Thank 4 hold & model  ",
+                    "submenutitle": "Apple Thank 4 hold & model ",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "Apple Thank 4 hold & model   English",
+                            "script": "Thank you for your patience. What is the model of your iPhone?  Is that the iPhone 3G, 3Gs or iPhone4 that you have?"
+                        },
+                        {
+                            "scripttitle": "Apple Thank 4 hold & model   French",
+                            "script": "Je vous remercie de votre patience. Quel est le mod&#232;le de votre appareil sans fil? Est-ce que le iPhone 3G, 3GS ou iPhone4 que vous avez?"
+                        }
+                    ]
+                },
+                {
+                    "submenuname": "I can assist + confirm",
+                    "submenutitle": "I can assist + confirm",
+                    "submenusripts": [
+                        {
+                            "scripttitle": "I can assist + confirm # E",
+                            "script": "I can certainly help you with this. Please confirm that the wireless number and postal code entered prior to entering this service is for the device in question. [Yes/No]"
+                        },
+                        {
+                            "scripttitle": "I can assist + confirm # Fr",
+                            "script": "Je peux certainement vous aider avec ceci. S'il vous plaît confirmer que le numéro de téléphone  sans fil et le code postal entré avant d'entrer dans ce service est pour le dispositif en question. [Oui / Non]"
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ]
+}

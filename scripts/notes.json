@@ -1,0 +1,24 @@
+[
+
+ {
+	"id":0,
+	"title" : "Resend to switch",
+	"notes" : "Power Cycled the device\nresent to switch\nEnd Reg"
+  },
+
+  {
+	"id":1,
+	"title" : "xfer to ICC",
+	"notes" : "referred cx to ICC"
+  }
+ ,
+
+  {
+	"id":2,
+	"title" : "xfer to E-care",
+	"notes" : "referred cx to E-care"
+  }
+
+
+	
+]
