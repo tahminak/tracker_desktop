@@ -45,20 +45,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JTextArea;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.UIManager;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.undo.*;
 import org.apache.commons.io.FileUtils;
@@ -66,10 +61,16 @@ import org.apache.commons.io.LineIterator;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+
+
+import com.tracker.utility.ReadJsonFiles;
+
 /**
  *
- * @author Sinu
+ * @author Tahmina Khan
  */
+
+// UI for the tracker
 public class tracker_notesUI extends javax.swing.JFrame {
 
     /**
@@ -111,16 +112,32 @@ public class tracker_notesUI extends javax.swing.JFrame {
     Toolkit toolkit;
     Timer timer;
 
+    
+    
     @SuppressWarnings("empty-statement")
     public tracker_notesUI() throws FileNotFoundException, IOException, ParseException {
+
+        //Header for the tracker
         super("Tracker for Rogers Wireless Live Chat");
+
+        
+        //Hardcoded voicemail 
         this.voicemailnode = new String[]{"+1-905-922-1188", "+1-514-992-1188", "+1-604-618-1188",
             "+1-403-714-1188", "+1-647-278-9961", "+1-647-278-9951", "+1-647-530-1103", "+1-514-290-0728", "+1-778-288-1453", "+1-647-802-9327", "+1-647-839-6178"};
 
+        //Initialize Components 
         initComponents();
+        
+        
         UIManager.put("Button.select", Color.black);
-        notes = readNotesJson("notes.json");
+        
+        //Read notes json file
+        notes = ReadJsonFiles.readNotesJson("notes.json");
+        
+        
+         //Read scripts json file
         scripts = readScriptsJson("scripts.json");
+        
         // reading devices for settings
         devices = readDevicesJson("devices.json");
 
@@ -128,7 +145,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         Collections.sort(notes);
 
         //Updating all the scripts
-
         updateAllNotes();
 
         genrateScriptsButtons();
@@ -178,7 +194,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         popup.add(new JMenuItem(new DefaultEditorKit.PasteAction()));
         popup.add(new JMenuItem(new DefaultEditorKit.CutAction()));
 
-
         notesTextArea0.setComponentPopupMenu(popup);
         notesTextArea1.setComponentPopupMenu(popup);
         notesTextArea2.setComponentPopupMenu(popup);
@@ -187,13 +202,12 @@ public class tracker_notesUI extends javax.swing.JFrame {
         notesTextArea5.setComponentPopupMenu(popup);
         notesTextArea.setComponentPopupMenu(popup);
 
-
         vmnodebutton.setText(voicemailnode[vmnodebox.getSelectedIndex()]);
         //System.out.println(validateIMEI("3557940525597504"));
 
         toolkit = Toolkit.getDefaultToolkit();
         timer = new Timer();
-        timer.schedule(new RemindTask(), 5 * 1000,600000);
+        timer.schedule(new RemindTask(), 5 * 1000, 600000);
         populateChatPerHourTable();
     }
 
@@ -201,7 +215,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         @Override
         public void run() {
-           
+
             try {
                 populateChatPerHourTable();
             } catch (IOException ex) {
@@ -239,15 +253,12 @@ public class tracker_notesUI extends javax.swing.JFrame {
         // to add 'add notes'" item
         String[] notestilesforbox = new String[notecounter];
 
-
         // initializing notes title box 
         int i = 0;
         for (Notes note : notes) {
             notestilesforbox[i] = note.getNotestitle();
             i++;
         }
-
-
 
         notestilebox.setModel(new javax.swing.DefaultComboBoxModel(notestilesforbox));
         //notestilebox.setSelectedIndex(notecounter);
@@ -1567,8 +1578,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         while (reader.hasNext()) {
             menus.add(readMainMenus(reader));
 
-
-
         }
 
         reader.endArray();
@@ -1582,7 +1591,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         int id = -1;
         String menuname = "";
         List<Submenu> submenus = null;
-
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -1599,7 +1607,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
                 reader.skipValue();
             }
 
-
         }
 
         reader.endObject();
@@ -1613,7 +1620,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
     private List<Submenu> readSubMenus(JsonReader reader) throws IOException {
 
         List<Submenu> submenu = new ArrayList<Submenu>();
-
 
         reader.beginArray();
         while (reader.hasNext()) {
@@ -1647,7 +1653,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } else {
                 reader.skipValue();
             }
-
 
         }
         reader.endObject();
@@ -1713,7 +1718,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         List<Make> makes = new ArrayList<Make>();
 
-
         reader.beginArray();
         while (reader.hasNext()) {
             makes.add(readMake(reader));
@@ -1725,7 +1729,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
     }
 
     private Make readMake(JsonReader reader) throws IOException {
-
 
         String name = "";
 
@@ -1748,22 +1751,16 @@ public class tracker_notesUI extends javax.swing.JFrame {
                 reader.skipValue();
             }
 
-
         }
         reader.endObject();
 
-
-
         return new Make(id, makeName, models);
-
 
     }
 
     private List<Model> readModels(JsonReader reader) throws IOException {
 
-
         List<Model> models = new ArrayList<Model>();
-
 
         reader.beginArray();
         while (reader.hasNext()) {
@@ -1771,16 +1768,13 @@ public class tracker_notesUI extends javax.swing.JFrame {
         }
         reader.endArray();
 
-
         return models;
 
     }
 
     private Model readModel(JsonReader reader) throws IOException {
 
-
         String name = "";
-
 
         String modelName = "";
         List<Issue> issues = null;
@@ -1790,7 +1784,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
             name = reader.nextName();
 
-
             if (name.equals("modelorosname")) {
                 modelName = reader.nextString();
             } else if (name.equals("issues")) {
@@ -1798,7 +1791,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } else {
                 reader.skipValue();
             }
-
 
         }
         reader.endObject();
@@ -1825,7 +1817,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         String name = "";
 
-
         String issueName = "";
         List<Step> steps = new ArrayList<Step>();
 
@@ -1834,7 +1825,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
             name = reader.nextName();
 
-
             if (name.equals("issue")) {
                 issueName = reader.nextString();
             } else if (name.equals("steps")) {
@@ -1842,7 +1832,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } else {
                 reader.skipValue();
             }
-
 
         }
         reader.endObject();
@@ -1874,7 +1863,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
             name = reader.nextName();
 
-
             if (name.equals("steptitle")) {
                 stepTitle = reader.nextString();
             } else if (name.equals("step")) {
@@ -1882,7 +1870,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } else {
                 reader.skipValue();
             }
-
 
         }
         reader.endObject();
@@ -1894,8 +1881,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         Notes selectedNotes = notes.get(noteListBox1.getSelectedIndex());
 
-
-
         notesTextArea0.setText(notesTextArea0.getText() + "\n" + selectedNotes.getNotes());
 
     }//GEN-LAST:event_noteListBox1ActionPerformed
@@ -1903,23 +1888,17 @@ public class tracker_notesUI extends javax.swing.JFrame {
     private void noteListBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteListBox2ActionPerformed
         Notes selectedNotes = notes.get(noteListBox2.getSelectedIndex());
 
-
-
         notesTextArea1.setText(notesTextArea1.getText() + "\n" + selectedNotes.getNotes());
     }//GEN-LAST:event_noteListBox2ActionPerformed
 
     private void noteListBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteListBox3ActionPerformed
         Notes selectedNotes = notes.get(noteListBox3.getSelectedIndex());
 
-
-
         notesTextArea2.setText(notesTextArea2.getText() + "\n" + selectedNotes.getNotes());
     }//GEN-LAST:event_noteListBox3ActionPerformed
 
     private void noteListBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteListBox4ActionPerformed
         Notes selectedNotes = notes.get(noteListBox4.getSelectedIndex());
-
-
 
         notesTextArea3.setText(notesTextArea3.getText() + "\n" + selectedNotes.getNotes());
     }//GEN-LAST:event_noteListBox4ActionPerformed
@@ -2025,7 +2004,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
 
-
             String title = searchCustomerName(notesTextArea0.getText());
             String ctn = searchCtn(notesTextArea0.getText());
 
@@ -2066,13 +2044,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
             Clipboard clipboard = toolkit.getSystemClipboard();
             try {
 
-
                 formatedInfo = notesTextArea0.getText();
 
                 if (formatedInfo.equals("")) {
                     formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
                 }
-
 
                 // System.out.println(notesTextArea0.getText(notesTextArea0.getCaretPosition(), notesTextArea0.getLineCount()+2));
                 notesTextArea0.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
@@ -2127,13 +2103,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
             Clipboard clipboard = toolkit.getSystemClipboard();
             try {
 
-
                 formatedInfo = notesTextArea1.getText();
 
                 if (formatedInfo.equals("")) {
                     formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
                 }
-
 
                 //.out.println(formatedInfo);
                 notesTextArea1.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
@@ -2144,7 +2118,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-
 
         }
     }//GEN-LAST:event_notesTextArea1KeyPressed
@@ -2186,7 +2159,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             Clipboard clipboard = toolkit.getSystemClipboard();
             try {
 
-
                 formatedInfo = notesTextArea2.getText();
 
                 if (formatedInfo.equals("")) {
@@ -2202,7 +2174,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-
 
         }
     }//GEN-LAST:event_notesTextArea2KeyPressed
@@ -2245,7 +2216,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             Clipboard clipboard = toolkit.getSystemClipboard();
             try {
 
-
                 formatedInfo = notesTextArea3.getText();
 
                 if (formatedInfo.equals("")) {
@@ -2261,7 +2231,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-
 
         }
     }//GEN-LAST:event_notesTextArea3KeyPressed
@@ -2304,7 +2273,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             Clipboard clipboard = toolkit.getSystemClipboard();
             try {
 
-
                 formatedInfo = notesTextArea4.getText();
                 if (formatedInfo.equals("")) {
                     formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
@@ -2319,7 +2287,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-
 
         }
     }//GEN-LAST:event_notesTextArea4KeyPressed
@@ -2362,14 +2329,12 @@ public class tracker_notesUI extends javax.swing.JFrame {
             Clipboard clipboard = toolkit.getSystemClipboard();
             try {
 
-
                 formatedInfo = notesTextArea5.getText();
                 if (formatedInfo.equals("")) {
                     formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
                 }
 
                 // System.out.println(formatedInfo);
-
                 notesTextArea5.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
 
             } catch (UnsupportedFlavorException ex) {
@@ -2378,7 +2343,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-
 
         }
     }//GEN-LAST:event_notesTextArea5KeyPressed
@@ -2393,7 +2357,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int ctntindex = noteText.lastIndexOf("PhoneNumber:");
 
             //System.out.println(ctntindex);
-
             if (ctntindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2406,7 +2369,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             ctntindex = noteText.lastIndexOf("CTN/Phone:");
 
             if (ctntindex > -1) {
-
 
                 ctn = noteText.substring(ctntindex + 12);
                 String[] s = ctn.split("\n");
@@ -2421,7 +2383,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     private String searchImei(String noteText) {
 
-
         String imei = "";
 
         if (noteText.equals("")) {
@@ -2430,7 +2391,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int imeiindex = noteText.lastIndexOf("IMEI:");
 
             //System.out.println(ctntindex);
-
             if (imeiindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2465,15 +2425,12 @@ public class tracker_notesUI extends javax.swing.JFrame {
             for (int i = 0; i < 14; i++) {
 
                 //getting ascii value for each character
-
                 imeiArray[i] = Integer.parseInt(charArray[i + 1]);
                 validIMei += imeiArray[i] + "";
                 // System.out.println(imeiArray[i]+" IMEI ");
 
                 // charArray[i]=IMEI.split("");
                 //System.out.println(charArray[i]+"");
-
-
                 if (i % 2 != 0) {
                     imeiArray[i] = imeiArray[i] * 2;
                 }
@@ -2482,18 +2439,13 @@ public class tracker_notesUI extends javax.swing.JFrame {
                     imeiArray[i] = (imeiArray[i] % 10) + (imeiArray[i] / 10);
                 }
 
-
                 // System.out.println(imeiArray[i]+" IMEI 2");
-
             }
-
-
 
             int totalValue = 0;
             for (int j = 0; j < 14; j++) {
                 totalValue += imeiArray[j];
                 // System.out.println("Total Value is: "+totalValue);
-
 
             }
             // System.out.println("Total Value is: "+totalValue);
@@ -2504,16 +2456,12 @@ public class tracker_notesUI extends javax.swing.JFrame {
                 imeiArray[14] = (10 - (totalValue % 10));
             }
 
-
             //Make the new IMEI
-
             //  for(int i:imeiArray){
             // validIMei+=i+"";
             // }
-
             return validIMei + imeiArray[14];
         }
-
 
     }
 
@@ -2524,12 +2472,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
         customerInfromations = customerInfromations + "Session ID:" + searchSessionID(text) + "\n" + "Client Name: " + searchCustomerName(text)
                 + "\nPhoneNumber: " + searchCtn(text) + "\nPostal Code:" + searchPostalCode(text) + "\nChannel:" + searchQueue(text) + "\n---------------------------------------------------------------";
 
-
-
-
         //System.out.println(customerInfromations);
-
-
         return customerInfromations;
 
     }
@@ -2552,13 +2495,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
             }
             return "";
 
-
         }
 
     }
 
     private String searchPostalCode(String text) {
-
 
         String postalcode = "";
 
@@ -2568,7 +2509,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int postalcodeindex = text.lastIndexOf("Postal Code:");
 
             //System.out.println(ctntindex);
-
             if (postalcodeindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2585,7 +2525,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     private String searchQueue(String text) {
 
-
         String Queue = "";
 
         if (text.equals("")) {
@@ -2594,7 +2533,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int Queueindex = text.lastIndexOf("Channel:");
 
             //System.out.println(ctntindex);
-
             if (Queueindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2613,16 +2551,13 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         String deviceInformations = "";
 
-
         deviceInformations = "\nDevice:" + searchDevice(text) + "\nDevice Type:" + checkDeviceType(text) + "\nIMEI: " + validateIMEI(searchImei(text)) + "\nIMSI:" + searchIMSI(text) + "\nAPNs:" + searchAPNs(text) + "\n---------------------------------------------------------------";
-
 
         //System.out.println(deviceInformations);
         return deviceInformations;
     }
 
     private String searchIMSI(String text) {
-
 
         String IMSI = "";
 
@@ -2632,7 +2567,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int IMSIindex = text.lastIndexOf("IMSI:");
 
             //System.out.println(ctntindex);
-
             if (IMSIindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2649,7 +2583,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     private String searchDevice(String text) {
 
-
         String device = "";
 
         if (text.equals("")) {
@@ -2658,7 +2591,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int deviceindex = text.lastIndexOf("Device:");
 
             //System.out.println(ctntindex);
-
             if (deviceindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2675,7 +2607,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     private String checkDeviceType(String text) {
 
-
         String devicetype = "";
 
         if (text.equals("")) {
@@ -2684,7 +2615,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int devicetypeindex = text.lastIndexOf("Warning:");
 
             //System.out.println(ctntindex);
-
             if (devicetypeindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2710,7 +2640,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int APNsindex = text.lastIndexOf("APNs:");
 
             //System.out.println(ctntindex);
-
             if (APNsindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2737,14 +2666,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     private void issueBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_issueBoxActionPerformed
 
-
-
         String selectedIssue = (String) issueBox.getSelectedItem();
         Issue issue = null;
 
         issue = devices.get(selectedMakeIndex).getModels().get(modelBox.getSelectedIndex()).getIssues().get(issueBox.getSelectedIndex());
         // issueText.setText(issue.getIssueName());
-
 
         // englishIssueTitleText.setText(issue.getIssueSteps().get(0).getStepTitle());
         englihIssuetTextArea.setText(issue.getIssueSteps().get(0).getStepText());
@@ -2952,8 +2878,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         return resultedNumber;
 
-
-
     }
 
     /*private String voiceMailSteps(int selectedVersion){
@@ -2972,7 +2896,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             int customernamefirstindex = noteText.lastIndexOf("Customer Name/Nom du Client:");
 
             //System.out.println(customernamefirstindex);
-
             if (customernamefirstindex > -1) {
                 // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
 
@@ -2986,7 +2909,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             customernamefirstindex = noteText.lastIndexOf("Client Name:");
 
             if (customernamefirstindex > -1) {
-
 
                 customername = noteText.substring(customernamefirstindex + 12);
                 String[] s = customername.split("\n");
@@ -3017,9 +2939,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
                 j++;
             }
 
-
             subMenuBox.setModel(new javax.swing.DefaultComboBoxModel(subMenuBoxText));
-
 
         }
 
@@ -3029,9 +2949,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
         selectecSubmenTitle = (String) subMenuBox.getSelectedItem();
         Submenu selectedSubmeu = null;
 
-
         selectedSubmeu = selectedMenu.getSubMenus().get(subMenuBox.getSelectedIndex());
-
 
         englishScriptlbl.setText(selectedSubmeu.getSubMenuScripts().get(0).getScriptTitle());
         englishScriptTextArea.setText(selectedSubmeu.getSubMenuScripts().get(0).getScriptText());
@@ -3104,7 +3022,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
             chatPerHourTable.getModel().setValueAt(totalSessions, 0, 2);
             chatPerHourTable.getModel().setValueAt(CPH, 0, 3);
 
-
             //System.out.println("Total Hours : "+ totalHours+" Total Minutes: "+totalMinutes);
             //System.out.println(linesIterator.get(0).toString());
             //System.out.println(logFilename);
@@ -3115,8 +3032,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     private int countSessions() throws IOException {
 
-
-
         LineIterator lines = FileUtils.lineIterator(file);
         String line = "";
         Pattern sessionPattern, timePattern;
@@ -3124,13 +3039,10 @@ public class tracker_notesUI extends javax.swing.JFrame {
         sessionPattern = Pattern.compile("Session \\d+ ready");
         timePattern = Pattern.compile("^[\\[]*.*]");
 
-
         Matcher matchSession, matchTime;
-
 
         Set<String> uniqueSessions = new LinkedHashSet<String>();
         String[] splitsStrings = new String[3];
-
 
         try {
             while (lines.hasNext()) {
@@ -3139,26 +3051,19 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
                 matchSession = sessionPattern.matcher(line);
 
-
                 //Counting Unique sessions
                 if (matchSession.find()) {
                     splitsStrings = line.substring(matchSession.start()).split(" ");
                     uniqueSessions.add(splitsStrings[1]);
 
-
-
                 }
-
 
             }
         } finally {
             LineIterator.closeQuietly(lines);
         }
 
-
-
         //System.out.println(uniqueSessions.toString());
-
         return uniqueSessions.size();
 
     }
@@ -3171,7 +3076,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         List<String> lines = new ArrayList<String>();
         lines = FileUtils.readLines(file);
 
-
         String timeWithoutBracket = "";
 
         Pattern sessionReadyPattern, sessionLogoutPattern, timePattern;
@@ -3180,7 +3084,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         sessionLogoutPattern = Pattern.compile("Logout successful");
         timePattern = Pattern.compile("^[\\[]*.*]");
 
-
         Matcher matchSessionReady, matchSessionLogout, matchTime;
 
         Date startTime, endTime;
@@ -3188,14 +3091,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
         DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aaa");
         Duration duration;
 
-
         try {
 
             for (int i = 0; i < lines.size(); i++) {
 
-
                 // Checking start and end time
-
                 if (i == 0 || (i == (lines.size() - 1))) {
 
                     matchTime = timePattern.matcher(lines.get(i));
@@ -3225,8 +3125,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
                     }
                 }
 
-
-
                 //Checking session Logout status, and calculating Logout time  
                 matchSessionLogout = sessionLogoutPattern.matcher(lines.get(i));
                 if (matchSessionLogout.find()) {
@@ -3253,10 +3151,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
             //  LineIterator.closeQuietly(linesIterator);
         }
 
-
-
         return totalLoggedinHours;
-
 
     }
 
@@ -3554,9 +3449,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     private void updateModelTitleBox(int i) {
 
-
         List<Model> mModel = devices.get(i).getModels();
-
 
         String modelBoxText[] = new String[mModel.size()];
 
@@ -3569,7 +3462,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         selectedMakeIndex = i;
 
         modelBox.setModel(new javax.swing.DefaultComboBoxModel(modelBoxText));
-
 
     }
 
@@ -3586,14 +3478,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         issueBox.setModel(new javax.swing.DefaultComboBoxModel(issueBoxText));
 
-
     }
 
     private void updateIssueTittleBox() {
 
-
         issueBox.setModel(new javax.swing.DefaultComboBoxModel());
-
 
     }
 }
