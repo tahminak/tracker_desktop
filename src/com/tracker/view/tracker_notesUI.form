@@ -1737,6 +1737,7 @@
                         <Property name="columns" type="int" value="20"/>
                         <Property name="lineWrap" type="boolean" value="true"/>
                         <Property name="rows" type="int" value="5"/>
+                        <Property name="text" type="java.lang.String" value="Session ID: 211111111&#xa;Customer Name/Nom du Client: Jhon Doe&#xa;Status: Active&#xa;Time: 01:27&#xa;Total Time: 01:32&#xa;Platform: Windows 7 Google Chrome&#xa;Channel: NTSD General Support - Wireless&#xa;Type: Instant Chat&#xa;Postal Code: A1A1A1&#xa;CTN/Phone: (999) 999-999&#xa;&#xa;&#xa;Status: white&#xa;Service: Rogers_devices&#xa;Creation: 2013-09-03T16:51:20Z&#xa;MSISDN: 19999999999&#xa;IMSI: 123456789012345&#xa;IMEI: 1212121212121212&#xa;Device: Apple iPhone 5&#xa;Device pic adress : http://172.16.224.34:8002/webcmd/devicepic?brand=BlackBerry&amp;model=9700&#xa;Device: Apple iPhone 5&#xa;Device pic adress : http://172.16.224.34:8002/webcmd/devicepic?brand=Apple&amp;model=iPhone 5&#xa;Groups: rogers&#xa;OTASupport: true&#xa;APNs: blackberry.net,goam.com,internet.com,isp.apn,ltedata.apn,lteinternet.apn,ltemobile.apn,media.com,rogers-core-appl1.apn&#xa;DeviceCapa:  Ok&#xa;Single Shot Provisioning: ext1,yes,2012-11-04T12:07:52Z&#xa;Settings: &#xa;History:"/>
                         <Property name="wrapStyleWord" type="boolean" value="true"/>
                         <Property name="inheritsPopupMenu" type="boolean" value="true"/>
                       </Properties>
