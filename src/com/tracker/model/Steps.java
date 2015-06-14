@@ -6,16 +6,16 @@ package com.tracker.model;
 
 /**
  *
- * @author Sinu
+ * @author Tahmina Khan
  */
-public class Step {
+public class Steps {
      private String stepTitle="";
     private String stepText="";
     
-    public Step(){
+    public Steps(){
         
     }
-    public Step(String title,String text){
+    public Steps(String title,String text){
         stepTitle=title;
         stepText=text;
         

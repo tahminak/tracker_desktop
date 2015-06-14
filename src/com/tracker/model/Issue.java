@@ -33,14 +33,14 @@ public class Issue {
     }
     
     private String issueName="";
-    private List<Step> issues=null;
+    private List<Steps> issues=null;
     
     
     public Issue(){
         
         
     }
-     public Issue(String iName,List<Step> iSteps){
+     public Issue(String iName,List<Steps> iSteps){
         
         issueName=iName;
     
@@ -60,12 +60,12 @@ public class Issue {
  
      
      
-     public void setIssueSteps(List<Step> mScripts){
+     public void setIssueSteps(List<Steps> mScripts){
          
          issues=mScripts;
      }
      
-      public List<Step> getIssueSteps(){
+      public List<Steps> getIssueSteps(){
          
         return issues;
      }

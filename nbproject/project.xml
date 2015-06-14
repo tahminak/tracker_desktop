@@ -9,7 +9,7 @@
             </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>tracker_notes</name>
+            <name>Tracker_notes</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

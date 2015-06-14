@@ -1,16 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.tracker.utility;
 
 /**
  *
- * @author Sinu
+ * @author Tahmina Khan
  */
-public class Frenchparser {
+
+/*
+
+Helper class to parse french character to and from HTML
+
+
+*/
+
+public class FrenchParser {
     
-    
+    //Encode french character to html code
     public static String encodeToAcutesHTML(String str) {
                 
                 str = str.replaceAll("À","&#192;");
@@ -44,10 +49,15 @@ public class Frenchparser {
                 str = str.replaceAll("«","&#171;");
                 str = str.replaceAll("€","&#128;");
                 str = str.replaceAll("₣","&#8355;");
+                
+                str = str.replace("è","&#232;");
+                str = str.replace("’","&#8217;");
 
         return str;
     }
     
+    
+    //Decode html to french code
     public static String decodeToAcutesHTML(String str) {
                 
                 str = str.replaceAll("&#192;","À");
@@ -81,6 +91,9 @@ public class Frenchparser {
                 str = str.replaceAll("&#171;","«");
                 str = str.replaceAll("&#128;","€");
                 str = str.replaceAll("&#8355;","₣");
+                
+                str = str.replace("&#232;", "è");
+                str = str.replace("&#8217;", "’");
 
         return str;
     }

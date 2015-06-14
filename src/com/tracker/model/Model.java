@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author Sinu
+ * @author Tahmina Khan
  */
 public class Model {
     

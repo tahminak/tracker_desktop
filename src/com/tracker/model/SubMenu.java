@@ -9,20 +9,20 @@ import java.util.List;
 
 /**
  *
- * @author Sinu
+ * @author Tahmina Khan
  */
-public class Submenu implements Comparable<Submenu>{
+public class SubMenu implements Comparable<SubMenu>{
     
     private String subMenuName="";
     private String subMenuTitle="";
     private List<Script> subMenuScripts=null;
     
     
-    public Submenu(){
+    public SubMenu(){
         
         
     }
-     public Submenu(String sMenu,String sTitle,List<Script> sMenuscript){
+     public SubMenu(String sMenu,String sTitle,List<Script> sMenuscript){
         
         subMenuName=sMenu;
         subMenuTitle=sTitle;
@@ -67,7 +67,7 @@ public class Submenu implements Comparable<Submenu>{
       }
 
     @Override
-    public int compareTo(Submenu o) {
+    public int compareTo(SubMenu o) {
         return this.getsSubMenuTitle().compareToIgnoreCase(o.getsSubMenuTitle());
     }
 }

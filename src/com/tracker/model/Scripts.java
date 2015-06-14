@@ -9,12 +9,12 @@ import java.util.List;
 
 /**
  *
- * @author Sinu
+ * @author Tahmina Khan
  */
 public class Scripts {
     
     
-    private List<Mainmenu> menus=null;
+    private List<MainMenu> menus=null;
     
     
     public Scripts(){
@@ -22,25 +22,25 @@ public class Scripts {
     }
     
     
-    public Scripts(List<Mainmenu> mMenu){
+    public Scripts(List<MainMenu> mMenu){
         
         menus=mMenu;
     }
     
     
-    public void setMenus(List<Mainmenu> mMenu){
+    public void setMenus(List<MainMenu> mMenu){
         
         menus=mMenu;
     }
     
     
-    public List<Mainmenu> getMenus(){
+    public List<MainMenu> getMenus(){
         return menus;
     }
     
-    public List<Mainmenu> sortedScripts(){
+    public List<MainMenu> sortedScripts(){
         
-     //  Collections.sort(menus);
+  
        return this.getMenus();
     }
     

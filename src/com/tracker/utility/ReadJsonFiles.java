@@ -2,14 +2,14 @@ package com.tracker.utility;
 
 import com.google.gson.stream.JsonReader;
 import com.tracker.model.Issue;
-import com.tracker.model.Mainmenu;
+import com.tracker.model.MainMenu;
 import com.tracker.model.Make;
 import com.tracker.model.Model;
 import com.tracker.model.Notes;
 import com.tracker.model.Script;
 import com.tracker.model.Scripts;
-import com.tracker.model.Step;
-import com.tracker.model.Submenu;
+import com.tracker.model.Steps;
+import com.tracker.model.SubMenu;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Tahmina Khan
  */
 
-//Read Json Files
+//Read Json Files and returns Json Object or Json Array
 public class ReadJsonFiles {
 
     public ReadJsonFiles() {
@@ -123,13 +123,13 @@ public class ReadJsonFiles {
         return readScripts;
     }
 
-    private static List<Mainmenu> readMenuList(JsonReader reader) throws IOException {
+    private static List<MainMenu> readMenuList(JsonReader reader) throws IOException {
 
-        List<Mainmenu> menus = new ArrayList<Mainmenu>();
-        Mainmenu menu = null;
+        List<MainMenu> menus = new ArrayList<MainMenu>();
+        MainMenu menu = null;
         int id = -1;
         String menuName = "";
-        List<Submenu> submenus = null;
+        List<SubMenu> submenus = null;
 
         reader.beginArray();
         while (reader.hasNext()) {
@@ -142,12 +142,12 @@ public class ReadJsonFiles {
     }
 
     // read each menu,and add to manu list
-    private static Mainmenu readMainMenus(JsonReader reader) throws IOException {
+    private static MainMenu readMainMenus(JsonReader reader) throws IOException {
 
-        Mainmenu menu = null;
+        MainMenu menu = null;
         int id = -1;
         String menuname = "";
-        List<Submenu> submenus = null;
+        List<SubMenu> submenus = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -168,15 +168,15 @@ public class ReadJsonFiles {
 
         reader.endObject();
 
-        menu = new Mainmenu(id, menuname, submenus);
+        menu = new MainMenu(id, menuname, submenus);
 
         return menu;
 
     }
 
-    private static List<Submenu> readSubMenus(JsonReader reader) throws IOException {
+    private static List<SubMenu> readSubMenus(JsonReader reader) throws IOException {
 
-        List<Submenu> submenu = new ArrayList<Submenu>();
+        List<SubMenu> submenu = new ArrayList<SubMenu>();
 
         reader.beginArray();
         while (reader.hasNext()) {
@@ -189,9 +189,9 @@ public class ReadJsonFiles {
         return submenu;
     }
 
-    private static Submenu readSubMenu(JsonReader reader) throws IOException {
+    private static SubMenu readSubMenu(JsonReader reader) throws IOException {
 
-        Submenu submenu = null;
+        SubMenu submenu = null;
         String submenuname = "";
         String submenutitle = "";
         List<Script> submenuscripts = null;
@@ -214,7 +214,7 @@ public class ReadJsonFiles {
         }
         reader.endObject();
 
-        submenu = new Submenu(submenuname, submenutitle, submenuscripts);
+        submenu = new SubMenu(submenuname, submenutitle, submenuscripts);
 
         return submenu;
 
@@ -377,7 +377,7 @@ public class ReadJsonFiles {
         String name = "";
 
         String issueName = "";
-        List<Step> steps = new ArrayList<Step>();
+        List<Steps> steps = new ArrayList<Steps>();
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -398,8 +398,8 @@ public class ReadJsonFiles {
         return new Issue(issueName, steps);
     }
 
-    private static List<Step> readSteps(JsonReader reader) throws IOException {
-        List<Step> steps = new ArrayList<Step>();
+    private static List<Steps> readSteps(JsonReader reader) throws IOException {
+        List<Steps> steps = new ArrayList<Steps>();
 
         reader.beginArray();
         while (reader.hasNext()) {
@@ -410,7 +410,7 @@ public class ReadJsonFiles {
         return steps;
     }
 
-    private static Step readStep(JsonReader reader) throws IOException {
+    private static Steps readStep(JsonReader reader) throws IOException {
 
         String name = "";
         String stepTitle = "";
@@ -433,7 +433,7 @@ public class ReadJsonFiles {
         }
         reader.endObject();
 
-        return new Step(stepTitle, stepText);
+        return new Steps(stepTitle, stepText);
     }
 
 }

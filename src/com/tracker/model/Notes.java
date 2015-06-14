@@ -7,7 +7,7 @@ package com.tracker.model;
 
 /**
  *
- * @author Snigdha
+ * @author Tahmina Khan
  */
 public class Notes implements Comparable<Notes> {
     private int id;

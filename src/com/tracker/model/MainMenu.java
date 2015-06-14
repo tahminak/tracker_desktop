@@ -8,21 +8,21 @@ import java.util.List;
 
 /**
  *
- * @author Sinu
+ * @author Tahmina Khan
  */
-public class Mainmenu {
+public class MainMenu {
     
    
     private int id=-1;
     private String menuName="";
-    private List<Submenu> subMenus=null;
+    private List<SubMenu> subMenus=null;
     
-    public Mainmenu(){
+    public MainMenu(){
         
     }
     
     
-    public Mainmenu(int i,String nName, List<Submenu> sMenu){
+    public MainMenu(int i,String nName, List<SubMenu> sMenu){
         
          id=i;
          menuName=nName;
@@ -55,12 +55,12 @@ public class Mainmenu {
     }
     
     
-    public void setSubMenus(List<Submenu> sMenu){
+    public void setSubMenus(List<SubMenu> sMenu){
         
         subMenus=sMenu;
     }
     
-    public List<Submenu> getSubMenus(){
+    public List<SubMenu> getSubMenus(){
         
         return subMenus;
     }

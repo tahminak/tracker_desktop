@@ -1,17 +1,16 @@
-
 package com.tracker.view;
 
 import com.google.gson.stream.JsonReader;
 import com.tracker.model.Issue;
-import com.tracker.model.Mainmenu;
+import com.tracker.model.MainMenu;
 import com.tracker.model.Make;
 import com.tracker.model.Model;
 import com.tracker.model.Notes;
 import com.tracker.model.Script;
 import com.tracker.model.Scripts;
-import com.tracker.model.Step;
-import com.tracker.model.Submenu;
-import com.tracker.utility.Frenchparser;
+import com.tracker.model.Steps;
+import com.tracker.model.SubMenu;
+import com.tracker.utility.FrenchParser;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -58,28 +57,29 @@ import org.apache.commons.io.LineIterator;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-
-
 import com.tracker.utility.ReadJsonFiles;
+import com.tracker.utility.Utilities;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author Tahmina Khan
  */
-
 // UI for the tracker
-public class tracker_notesUI extends javax.swing.JFrame {
+public class Tracker_notesUI extends javax.swing.JFrame {
 
     /**
      * Creates new form tracker_notesUI
      */
-    private List<Notes> notes;
-    //Variables for Scripts Tab
+    //Variables for Scripts,Devices,and Notes Tab
     private Scripts scripts = null;
     private List<Make> devices = null;
-    private int notecounter;
-    private Mainmenu selectedMenu;
-    private String selectecSubmenTitle;
+    private List<Notes> notes;
+
+    private int noteCounter;
+    private MainMenu selectedMenu;
+    private String selectedSubmenTitle;
+
     private HashMap<String, Component> componentMap;
     private final JPopupMenu popup;
     private final JMenuItem undoMenuItem;
@@ -96,47 +96,78 @@ public class tracker_notesUI extends javax.swing.JFrame {
      *
      */
     private String[] voicemailnode;
-    //reading the log file
-    //String logFilename= "C:/Documents and Settings/"+System.getProperty("user.name")+"/Application Data/LogMeIn Rescue/LMIRescue.log";
-    String logFilename = "C:/LogMeIn Rescue/LMIRescue.log";
-    File file = new File(logFilename);
-    //List linesIterator = FileUtils.readLines(file, "UTF-8");
+
+    //Logmein log file reader
+    private String logFileName;
+    private File logMeInLog;
+
     /*
      * 
      * Timer Chat Per Hour
      * 
      */
-    Toolkit toolkit;
-    Timer timer;
+    private Toolkit toolkit;
+    private Timer timer;
+    
+    //Some constant
+    private final String CTN="CTN: ";
+    private final String IMEI="IMEI: ";
+    private final String INVALID_IMEI="111111111111111";
 
-    
-    
     @SuppressWarnings("empty-statement")
-    public tracker_notesUI() throws FileNotFoundException, IOException, ParseException {
+    public Tracker_notesUI() throws IOException, ParseException {
 
         //Header for the tracker
         super("Tracker for Rogers Wireless Live Chat");
 
-        
-        //Hardcoded voicemail 
+        //Predefined voicemail nodes
         this.voicemailnode = new String[]{"+1-905-922-1188", "+1-514-992-1188", "+1-604-618-1188",
             "+1-403-714-1188", "+1-647-278-9961", "+1-647-278-9951", "+1-647-530-1103", "+1-514-290-0728", "+1-778-288-1453", "+1-647-802-9327", "+1-647-839-6178"};
 
+        //Check the system for the correct path of the log file
+        String osName = System.getProperty("os.name");
+
+        if (osName.equals("Windows 8")) {
+            logFileName = "C:/LogMeIn Rescue/LMIRescue.log";
+        } else if (osName.equals("Windows 7")) {
+            logFileName = "C:/Documents and Settings/" + System.getProperty("user.name") + "/Application Data/LogMeIn Rescue/LMIRescue.log";
+        } else {
+            logFileName = "";
+        }
+
+        //Read LogMe In log file
+        logMeInLog = new File(logFileName);
+
         //Initialize Components 
         initComponents();
-        
-        
-        UIManager.put("Button.select", Color.black);
-        
+
         //Read notes json file
-        notes = ReadJsonFiles.readNotesJson("notes.json");
-        
-        
-         //Read scripts json file
-        scripts = ReadJsonFiles.readScriptsJson("scripts.json");
-        
+        try {
+            notes = ReadJsonFiles.readNotesJson("notes.json");
+        } catch (FileNotFoundException ex) {
+
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        //Read scripts json file
+        try {
+            scripts = ReadJsonFiles.readScriptsJson("scripts.json");
+
+        } catch (FileNotFoundException ex) {
+
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
         //Read devices for settings
-        devices = ReadJsonFiles.readDevicesJson("devices.json");
+        try {
+            devices = ReadJsonFiles.readDevicesJson("devices.json");
+        } catch (FileNotFoundException ex) {
+
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
 
         //Sort Notes List
         Collections.sort(notes);
@@ -144,11 +175,12 @@ public class tracker_notesUI extends javax.swing.JFrame {
         //Update all the scripts
         updateAllNotes();
 
+        //Add dynamic buttons to the panel
         genrateScriptsButtons();
         genrateDeviceSettingButtons();
 
         /*
-         * implementing right click pop up menu
+         * Implement right click pop up menu
          * 
          */
         popup = new JPopupMenu();
@@ -191,6 +223,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
         popup.add(new JMenuItem(new DefaultEditorKit.PasteAction()));
         popup.add(new JMenuItem(new DefaultEditorKit.CutAction()));
 
+        //Add popup menu to the text areas
         notesTextArea0.setComponentPopupMenu(popup);
         notesTextArea1.setComponentPopupMenu(popup);
         notesTextArea2.setComponentPopupMenu(popup);
@@ -200,15 +233,18 @@ public class tracker_notesUI extends javax.swing.JFrame {
         notesTextArea.setComponentPopupMenu(popup);
 
         vmnodebutton.setText(voicemailnode[vmnodebox.getSelectedIndex()]);
-        //System.out.println(validateIMEI("3557940525597504"));
+
+        populateChatPerHourTable();
 
         toolkit = Toolkit.getDefaultToolkit();
         timer = new Timer();
-        timer.schedule(new RemindTask(), 5 * 1000, 600000);
-        populateChatPerHourTable();
+        
+        //Update chat per hour in every hour
+        timer.schedule(new UpdateChatPerHourTask(), 5 * 1000, 600000);
+
     }
 
-    class RemindTask extends TimerTask {
+    class UpdateChatPerHourTask extends TimerTask {
 
         @Override
         public void run() {
@@ -216,9 +252,9 @@ public class tracker_notesUI extends javax.swing.JFrame {
             try {
                 populateChatPerHourTable();
             } catch (IOException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ParseException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -228,8 +264,15 @@ public class tracker_notesUI extends javax.swing.JFrame {
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    private void updateAllNotes() throws IOException {
-        notes = ReadJsonFiles.readNotesJson("notes.json");
+    //Read the Notes Json file , then populate the notesBox
+    private void updateAllNotes() {
+
+        try {
+
+            notes = ReadJsonFiles.readNotesJson("notes.json");
+        } catch (IOException ex) {
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         //Sorting Notes List
         Collections.sort(notes);
@@ -242,28 +285,27 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     }
 
+    //update notes
     private void updateNotesTitleBox(JComboBox notestilebox) {
-        // Getting the size f the 
-        notecounter = notes.size();
 
-        // creating tile box array size is one more than the size of the notes
-        // to add 'add notes'" item
-        String[] notestilesforbox = new String[notecounter];
+        noteCounter = notes.size();
+
+        //Generate Notes title
+        String[] notesTilesForbox = new String[noteCounter];
 
         // initializing notes title box 
         int i = 0;
         for (Notes note : notes) {
-            notestilesforbox[i] = note.getNotestitle();
+            notesTilesForbox[i] = note.getNotestitle();
             i++;
         }
 
-        notestilebox.setModel(new javax.swing.DefaultComboBoxModel(notestilesforbox));
-        //notestilebox.setSelectedIndex(notecounter);
+        //Set notes to the box
+        notestilebox.setModel(new javax.swing.DefaultComboBoxModel(notesTilesForbox));
 
     }
 
- 
-    
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -1343,6 +1385,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
         notesScrollpane.setViewportView(notesTextArea);
 
         jButton1.setText("Copy");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Clear");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -1470,7 +1517,6 @@ public class tracker_notesUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  
 
     private void noteListBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteListBox1ActionPerformed
 
@@ -1503,7 +1549,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         notesTextArea4.setText(notesTextArea4.getText() + "\n" + selectedNotes.getNotes());
 
-        //notesTextArea5.setText(selectedNotes.getNotes())
+
     }//GEN-LAST:event_noteListBox5ActionPerformed
 
     private void noteListBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteListBox6ActionPerformed
@@ -1511,7 +1557,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         notesTextArea5.setText(notesTextArea5.getText() + "\n" + selectedNotes.getNotes());
 
-        //notesTextArea5.setText(selectedNotes.getNotes())
+
     }//GEN-LAST:event_noteListBox6ActionPerformed
 
     private void showsidepanelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showsidepanelButtonActionPerformed
@@ -1533,28 +1579,37 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_subMenuBoxActionPerformed
 
+    //Copy the notes text
     private void copyNotesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyNotesButtonActionPerformed
         int selectedtaindex = NotesTabs.getSelectedIndex();
 
-        if (selectedtaindex == 0) {
-            copytoClipboard(notesTextArea0.getText());
-        } else if (selectedtaindex == 1) {
-            copytoClipboard(notesTextArea1.getText());
-        } else if (selectedtaindex == 2) {
-            copytoClipboard(notesTextArea2.getText());
-        } else if (selectedtaindex == 3) {
-            copytoClipboard(notesTextArea3.getText());
-        } else if (selectedtaindex == 4) {
-            copytoClipboard(notesTextArea4.getText());
-        } else if (selectedtaindex == 5) {
-            copytoClipboard(notesTextArea5.getText());
-        } else {
-            copytoClipboard("");
+        switch (selectedtaindex) {
+            case 0:
+                copytoClipboard(notesTextArea0.getText());
+                break;
+            case 1:
+                copytoClipboard(notesTextArea1.getText());
+                break;
+            case 2:
+                copytoClipboard(notesTextArea2.getText());
+                break;
+            case 3:
+                copytoClipboard(notesTextArea3.getText());
+                break;
+            case 4:
+                copytoClipboard(notesTextArea4.getText());
+                break;
+            case 5:
+                copytoClipboard(notesTextArea5.getText());
+                break;
+            default:
+                copytoClipboard("");
+                break;
+
         }
 
     }//GEN-LAST:event_copyNotesButtonActionPerformed
-    private void createComponentMap() {
-    }
+  
 
     public Component getComponentByName(String name) {
         if (componentMap.containsKey(name)) {
@@ -1595,79 +1650,77 @@ public class tracker_notesUI extends javax.swing.JFrame {
         NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), jTextField6.getText());
     }//GEN-LAST:event_jTextField6ActionPerformed
 
+    
+    // Key pressed events for the textarea
     private void notesTextArea0KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notesTextArea0KeyPressed
 
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
 
-            String title = searchCustomerName(notesTextArea0.getText());
-            String ctn = searchCtn(notesTextArea0.getText());
-
-            //System.out.println(ctn);
-            String formatedText = formateCustomerInformations(notesTextArea0.getText()) + formateDeviceInformations(notesTextArea0.getText());
-
+            String title = Utilities.searchCustomerName(notesTextArea0.getText());
+            String ctn = Utilities.searchCtn(notesTextArea0.getText());
+           
             if (title.equals("")) {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), "One");
             } else {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), title);
-                jLabel2.setText("CTN: ");
+                jLabel2.setText(CTN);
                 jTextField1.setText(ctn);
                 copytoClipboard(ctn);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F1) {
-            String imei = validateIMEI(searchImei(notesTextArea0.getText()));
+            String imei = Utilities.validateIMEI(Utilities.searchImei(notesTextArea0.getText()));
             if (!imei.isEmpty()) {
                 copytoClipboard(imei);
                 jTextField1.setText(imei);
-
-                jLabel2.setText("IMEI: ");
+                jLabel2.setText(IMEI);
             } else {
-                copytoClipboard("111111111111111");
-
-                jTextField1.setText("111111111111111");
-
-                jLabel2.setText("IMEI: ");
+                copytoClipboard(INVALID_IMEI);
+                jTextField1.setText(INVALID_IMEI);
+                jLabel2.setText(IMEI);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F11) {
-
-            String formatedInfo = "";
-            //copytoClipboard(imei);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Clipboard clipboard = toolkit.getSystemClipboard();
-            try {
-
-                formatedInfo = notesTextArea0.getText();
-
-                if (formatedInfo.equals("")) {
-                    formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
-                }
-
-                // System.out.println(notesTextArea0.getText(notesTextArea0.getCaretPosition(), notesTextArea0.getLineCount()+2));
-                notesTextArea0.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
-
-            } catch (UnsupportedFlavorException ex) {
-                //notesTextArea0.setText(formatedInfo);
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            notesTextAreaF11pressed(notesTextArea0);
         }
 
     }//GEN-LAST:event_notesTextArea0KeyPressed
 
+    //Formate the texts from the text area
+    private void notesTextAreaF11pressed(JTextArea notesTextArea) {
+
+        String formatedInfo = "";
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Clipboard clipboard = toolkit.getSystemClipboard();
+        try {
+
+            formatedInfo = notesTextArea.getText();
+
+            if (formatedInfo.equals("")) {
+                formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
+            }
+
+            notesTextArea.setText(Utilities.formateCustomerInformations(formatedInfo) + Utilities.formateDeviceInformations(formatedInfo));
+
+        } catch (UnsupportedFlavorException ex) {
+
+        } catch (IOException ex) {
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     private void notesTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notesTextArea1KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            String title = searchCustomerName(notesTextArea1.getText());
-            String ctn = searchCtn(notesTextArea1.getText());
+            String title = Utilities.searchCustomerName(notesTextArea1.getText());
+            String ctn = Utilities.searchCtn(notesTextArea1.getText());
             if (title.equals("")) {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), "Two");
             } else {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), title);
-                jLabel6.setText("CTN: ");
+                jLabel6.setText(CTN);
                 jTextField3.setText(ctn);
                 copytoClipboard(ctn);
 
@@ -1675,578 +1728,182 @@ public class tracker_notesUI extends javax.swing.JFrame {
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F1) {
-            String imei = validateIMEI(searchImei(notesTextArea1.getText()));
+            String imei = Utilities.validateIMEI(Utilities.searchImei(notesTextArea1.getText()));
             if (!imei.isEmpty()) {
                 copytoClipboard(imei);
                 jTextField3.setText(imei);
 
-                jLabel6.setText("IMEI: ");
+                jLabel6.setText(IMEI);
             } else {
-                copytoClipboard("111111111111111");
+                copytoClipboard(INVALID_IMEI);
 
-                jTextField3.setText("111111111111111");
+                jTextField3.setText(INVALID_IMEI);
 
-                jLabel6.setText("IMEI: ");
+                jLabel6.setText(IMEI);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F11) {
-
-            String formatedInfo = "";
-            //copytoClipboard(imei);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Clipboard clipboard = toolkit.getSystemClipboard();
-            try {
-
-                formatedInfo = notesTextArea1.getText();
-
-                if (formatedInfo.equals("")) {
-                    formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
-                }
-
-                //.out.println(formatedInfo);
-                notesTextArea1.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
-
-            } catch (UnsupportedFlavorException ex) {
-                //notesTextArea0.setText(formatedInfo);
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            notesTextAreaF11pressed(notesTextArea1);
         }
     }//GEN-LAST:event_notesTextArea1KeyPressed
 
     private void notesTextArea2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notesTextArea2KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            String title = searchCustomerName(notesTextArea2.getText());
-            String ctn = searchCtn(notesTextArea2.getText());
+            String title = Utilities.searchCustomerName(notesTextArea2.getText());
+            String ctn = Utilities.searchCtn(notesTextArea2.getText());
             if (title.equals("")) {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), "Three");
             } else {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), title);
-                jLabel4.setText("CTN: ");
+                jLabel4.setText(CTN);
                 jTextField2.setText(ctn);
                 copytoClipboard(ctn);
             }
         }
         if (evt.getKeyCode() == KeyEvent.VK_F1) {
-            String imei = validateIMEI(searchImei(notesTextArea2.getText()));
+            String imei = Utilities.validateIMEI(Utilities.searchImei(notesTextArea2.getText()));
             if (!imei.isEmpty()) {
                 copytoClipboard(imei);
                 jTextField2.setText(imei);
 
-                jLabel4.setText("IMEI: ");
+                jLabel4.setText(IMEI);
             } else {
-                copytoClipboard("111111111111111");
+                copytoClipboard(INVALID_IMEI);
 
-                jTextField2.setText("111111111111111");
+                jTextField2.setText(INVALID_IMEI);
 
-                jLabel4.setText("IMEI: ");
+                jLabel4.setText(IMEI);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F11) {
 
-            String formatedInfo = "";
-            //copytoClipboard(imei);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Clipboard clipboard = toolkit.getSystemClipboard();
-            try {
-
-                formatedInfo = notesTextArea2.getText();
-
-                if (formatedInfo.equals("")) {
-                    formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
-                }
-
-                // System.out.println(formatedInfo);
-                notesTextArea2.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
-
-            } catch (UnsupportedFlavorException ex) {
-                //notesTextArea0.setText(formatedInfo);
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            notesTextAreaF11pressed(notesTextArea2);
 
         }
     }//GEN-LAST:event_notesTextArea2KeyPressed
 
     private void notesTextArea3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notesTextArea3KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            String title = searchCustomerName(notesTextArea3.getText());
-            String ctn = searchCtn(notesTextArea3.getText());
+            String title = Utilities.searchCustomerName(notesTextArea3.getText());
+            String ctn = Utilities.searchCtn(notesTextArea3.getText());
             if (title.equals("")) {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), "Four");
             } else {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), title);
-                jLabel8.setText("CTN: ");
+                jLabel8.setText(CTN);
                 jTextField4.setText(ctn);
                 copytoClipboard(ctn);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F1) {
-            String imei = validateIMEI(searchImei(notesTextArea3.getText()));
+            String imei = Utilities.validateIMEI(Utilities.searchImei(notesTextArea3.getText()));
             if (!imei.isEmpty()) {
                 copytoClipboard(imei);
                 jTextField4.setText(imei);
 
-                jLabel8.setText("IMEI: ");
+                jLabel8.setText(IMEI);
             } else {
-                copytoClipboard("111111111111111");
+                copytoClipboard(INVALID_IMEI);
 
-                jTextField4.setText("111111111111111");
+                jTextField4.setText(INVALID_IMEI);
 
-                jLabel8.setText("IMEI: ");
+                jLabel8.setText(IMEI);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F11) {
 
-            String formatedInfo = "";
-            //copytoClipboard(imei);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Clipboard clipboard = toolkit.getSystemClipboard();
-            try {
-
-                formatedInfo = notesTextArea3.getText();
-
-                if (formatedInfo.equals("")) {
-                    formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
-                }
-
-                //System.out.println(formatedInfo);
-                notesTextArea3.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
-
-            } catch (UnsupportedFlavorException ex) {
-                //notesTextArea0.setText(formatedInfo);
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            notesTextAreaF11pressed(notesTextArea3);
 
         }
     }//GEN-LAST:event_notesTextArea3KeyPressed
 
     private void notesTextArea4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notesTextArea4KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            String title = searchCustomerName(notesTextArea4.getText());
+            String title = Utilities.searchCustomerName(notesTextArea4.getText());
 
-            String ctn = searchCtn(notesTextArea4.getText());
+            String ctn = Utilities.searchCtn(notesTextArea4.getText());
             if (title.equals("")) {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), "Five");
             } else {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), title);
-                jLabel10.setText("CTN: ");
+                jLabel10.setText(CTN);
                 jTextField5.setText(ctn);
                 copytoClipboard(ctn);
             }
         }
         if (evt.getKeyCode() == KeyEvent.VK_F1) {
-            String imei = validateIMEI(searchImei(notesTextArea4.getText()));
+            String imei = Utilities.validateIMEI(Utilities.searchImei(notesTextArea4.getText()));
             if (!imei.isEmpty()) {
                 copytoClipboard(imei);
                 jTextField5.setText(imei);
 
-                jLabel10.setText("IMEI: ");
+                jLabel10.setText(IMEI);
             } else {
-                copytoClipboard("111111111111111");
+                copytoClipboard(INVALID_IMEI);
 
-                jTextField5.setText("111111111111111");
+                jTextField5.setText(INVALID_IMEI);
 
-                jLabel10.setText("IMEI: ");
+                jLabel10.setText(IMEI);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F11) {
 
-            String formatedInfo = "";
-            //copytoClipboard(imei);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Clipboard clipboard = toolkit.getSystemClipboard();
-            try {
-
-                formatedInfo = notesTextArea4.getText();
-                if (formatedInfo.equals("")) {
-                    formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
-                }
-
-                //System.out.println(formatedInfo);
-                notesTextArea4.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
-
-            } catch (UnsupportedFlavorException ex) {
-                //notesTextArea0.setText(formatedInfo);
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            notesTextAreaF11pressed(notesTextArea4);
 
         }
     }//GEN-LAST:event_notesTextArea4KeyPressed
 
     private void notesTextArea5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notesTextArea5KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            String title = searchCustomerName(notesTextArea5.getText());
-            String ctn = searchCtn(notesTextArea5.getText());
+            String title = Utilities.searchCustomerName(notesTextArea5.getText());
+            String ctn = Utilities.searchCtn(notesTextArea5.getText());
             if (title.equals("")) {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), "Six");
             } else {
                 NotesTabs.setTitleAt(NotesTabs.getSelectedIndex(), title);
-                jLabel12.setText("CTN: ");
+                jLabel12.setText(CTN);
                 jTextField6.setText(ctn);
                 copytoClipboard(ctn);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F1) {
-            String imei = validateIMEI(searchImei(notesTextArea5.getText()));
+            String imei = Utilities.validateIMEI(Utilities.searchImei(notesTextArea5.getText()));
             if (!imei.isEmpty()) {
                 copytoClipboard(imei);
                 jTextField6.setText(imei);
 
-                jLabel12.setText("IMEI: ");
+                jLabel12.setText(IMEI);
             } else {
-                copytoClipboard("111111111111111");
+                copytoClipboard(INVALID_IMEI);
 
-                jTextField6.setText("111111111111111");
+                jTextField6.setText(INVALID_IMEI);
 
-                jLabel12.setText("IMEI: ");
+                jLabel12.setText(IMEI);
             }
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_F11) {
 
-            String formatedInfo = "";
-            //copytoClipboard(imei);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Clipboard clipboard = toolkit.getSystemClipboard();
-            try {
-
-                formatedInfo = notesTextArea5.getText();
-                if (formatedInfo.equals("")) {
-                    formatedInfo = (String) clipboard.getData(DataFlavor.stringFlavor);
-                }
-
-                // System.out.println(formatedInfo);
-                notesTextArea5.setText(formateCustomerInformations(formatedInfo) + formateDeviceInformations(formatedInfo));
-
-            } catch (UnsupportedFlavorException ex) {
-                //notesTextArea0.setText(formatedInfo);
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            notesTextAreaF11pressed(notesTextArea5);
 
         }
     }//GEN-LAST:event_notesTextArea5KeyPressed
 
-    private String searchCtn(String noteText) {
-        String ctn = "";
-        String formatedPhonenumber = "";
-        if (noteText.equals("")) {
-            return "";
-        } else {
+    
+    
 
-            int ctntindex = noteText.lastIndexOf("PhoneNumber:");
+  
+  
 
-            //System.out.println(ctntindex);
-            if (ctntindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
+  
 
-                ctn = noteText.substring(ctntindex + 13);
-                String[] s = ctn.split("\n");
-                formatedPhonenumber = s[0].replaceAll("[^0-9]", "");
-                return formatedPhonenumber;
-            }
-
-            ctntindex = noteText.lastIndexOf("CTN/Phone:");
-
-            if (ctntindex > -1) {
-
-                ctn = noteText.substring(ctntindex + 12);
-                String[] s = ctn.split("\n");
-                formatedPhonenumber = s[0].replaceAll("[^0-9]", "");
-                return formatedPhonenumber;
-
-            }
-
-            return "";
-        }
-    }
-
-    private String searchImei(String noteText) {
-
-        String imei = "";
-
-        if (noteText.equals("")) {
-            return "";
-        } else {
-            int imeiindex = noteText.lastIndexOf("IMEI:");
-
-            //System.out.println(ctntindex);
-            if (imeiindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                imei = noteText.substring(imeiindex + 6);
-                String[] s = imei.split("\n");
-
-                return s[0];
-
-            }
-            return "";
-        }
-    }
-
-    private String validateIMEI(String IMEI) {
-
-        String validIMei = "";
-
-        int sum = 0;
-
-        if (IMEI.length() < 16) {
-            return IMEI;
-        } else {
-            boolean errorflag = false;
-            int[] imeiArray = new int[15];
-
-            String[] charArray = IMEI.split("");
-
-            for (String s : charArray) {
-                //System.out.println("Test : "+s);
-            }
-
-            for (int i = 0; i < 14; i++) {
-
-                //getting ascii value for each character
-                imeiArray[i] = Integer.parseInt(charArray[i + 1]);
-                validIMei += imeiArray[i] + "";
-                // System.out.println(imeiArray[i]+" IMEI ");
-
-                // charArray[i]=IMEI.split("");
-                //System.out.println(charArray[i]+"");
-                if (i % 2 != 0) {
-                    imeiArray[i] = imeiArray[i] * 2;
-                }
-
-                while (imeiArray[i] > 9) {
-                    imeiArray[i] = (imeiArray[i] % 10) + (imeiArray[i] / 10);
-                }
-
-                // System.out.println(imeiArray[i]+" IMEI 2");
-            }
-
-            int totalValue = 0;
-            for (int j = 0; j < 14; j++) {
-                totalValue += imeiArray[j];
-                // System.out.println("Total Value is: "+totalValue);
-
-            }
-            // System.out.println("Total Value is: "+totalValue);
-            if (0 == totalValue % 10) {
-                imeiArray[14] = 0;
-            } else {
-
-                imeiArray[14] = (10 - (totalValue % 10));
-            }
-
-            //Make the new IMEI
-            //  for(int i:imeiArray){
-            // validIMei+=i+"";
-            // }
-            return validIMei + imeiArray[14];
-        }
-
-    }
-
-    private String formateCustomerInformations(String text) {
-
-        String customerInfromations = "Wireless Live Chat\n";
-
-        customerInfromations = customerInfromations + "Session ID:" + searchSessionID(text) + "\n" + "Client Name: " + searchCustomerName(text)
-                + "\nPhoneNumber: " + searchCtn(text) + "\nPostal Code:" + searchPostalCode(text) + "\nChannel:" + searchQueue(text) + "\n---------------------------------------------------------------";
-
-        //System.out.println(customerInfromations);
-        return customerInfromations;
-
-    }
-
-    private String searchSessionID(String text) {
-
-        String sessionId = "";
-        if (text.equals("")) {
-            return "";
-        } else {
-
-            int sessionIdIndex = text.lastIndexOf("Session ID:");
-
-            if (sessionIdIndex > -1) {
-                sessionId = text.substring(sessionIdIndex + 11);
-
-                String[] s = sessionId.split("\n");
-
-                return s[0];
-            }
-            return "";
-
-        }
-
-    }
-
-    private String searchPostalCode(String text) {
-
-        String postalcode = "";
-
-        if (text.equals("")) {
-            return "";
-        } else {
-            int postalcodeindex = text.lastIndexOf("Postal Code:");
-
-            //System.out.println(ctntindex);
-            if (postalcodeindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                postalcode = text.substring(postalcodeindex + 12);
-                String[] s = postalcode.split("\n");
-
-                return s[0].toUpperCase();
-
-            }
-            return "";
-        }
-
-    }
-
-    private String searchQueue(String text) {
-
-        String Queue = "";
-
-        if (text.equals("")) {
-            return "";
-        } else {
-            int Queueindex = text.lastIndexOf("Channel:");
-
-            //System.out.println(ctntindex);
-            if (Queueindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                Queue = text.substring(Queueindex + 8);
-                String[] s = Queue.split("\n");
-
-                return s[0];
-
-            }
-            return "";
-        }
-
-    }
-
-    private String formateDeviceInformations(String text) {
-
-        String deviceInformations = "";
-
-        deviceInformations = "\nDevice:" + searchDevice(text) + "\nDevice Type:" + checkDeviceType(text) + "\nIMEI: " + validateIMEI(searchImei(text)) + "\nIMSI:" + searchIMSI(text) + "\nAPNs:" + searchAPNs(text) + "\n---------------------------------------------------------------";
-
-        //System.out.println(deviceInformations);
-        return deviceInformations;
-    }
-
-    private String searchIMSI(String text) {
-
-        String IMSI = "";
-
-        if (text.equals("")) {
-            return "";
-        } else {
-            int IMSIindex = text.lastIndexOf("IMSI:");
-
-            //System.out.println(ctntindex);
-            if (IMSIindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                IMSI = text.substring(IMSIindex + 5);
-                String[] s = IMSI.split("\n");
-
-                return s[0];
-
-            }
-            return "";
-        }
-
-    }
-
-    private String searchDevice(String text) {
-
-        String device = "";
-
-        if (text.equals("")) {
-            return "";
-        } else {
-            int deviceindex = text.lastIndexOf("Device:");
-
-            //System.out.println(ctntindex);
-            if (deviceindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                device = text.substring(deviceindex + 7);
-                String[] s = device.split("\n");
-
-                return s[0];
-
-            }
-            return "";
-        }
-
-    }
-
-    private String checkDeviceType(String text) {
-
-        String devicetype = "";
-
-        if (text.equals("")) {
-            return "";
-        } else {
-            int devicetypeindex = text.lastIndexOf("Warning:");
-
-            //System.out.println(ctntindex);
-            if (devicetypeindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                devicetype = text.substring(devicetypeindex + 8);
-                String[] s = devicetype.split("\n");
-
-                // if(s[0].equals("1 Imei not registered"))
-                return " **** NON Rogers Device ******";
-                //else 
-                //return " Rogers Device";
-
-            }
-            return "";
-        }
-    }
-
-    private String searchAPNs(String text) {
-        String APNs = "";
-
-        if (text.equals("")) {
-            return "";
-        } else {
-            int APNsindex = text.lastIndexOf("APNs:");
-
-            //System.out.println(ctntindex);
-            if (APNsindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                APNs = text.substring(APNsindex + 5);
-                String[] s = APNs.split("\n");
-
-                return s[0].replaceAll("\n", "");
-
-            }
-            return "";
-        }
-    }
+    
     private void clearNotesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearNotesButtonActionPerformed
         clearTabs();
     }//GEN-LAST:event_clearNotesButtonActionPerformed
@@ -2265,12 +1922,8 @@ public class tracker_notesUI extends javax.swing.JFrame {
         Issue issue = null;
 
         issue = devices.get(selectedMakeIndex).getModels().get(modelBox.getSelectedIndex()).getIssues().get(issueBox.getSelectedIndex());
-        // issueText.setText(issue.getIssueName());
-
-        // englishIssueTitleText.setText(issue.getIssueSteps().get(0).getStepTitle());
         englihIssuetTextArea.setText(issue.getIssueSteps().get(0).getStepText());
-        //frenchIssueTtileText.setText(Frenchparser.decodeToAcutesHTML(issue.getIssueSteps().get(1).getStepTitle()));
-        frenchIssueTextArea.setText(Frenchparser.decodeToAcutesHTML(issue.getIssueSteps().get(1).getStepText()));
+        frenchIssueTextArea.setText(FrenchParser.decodeToAcutesHTML(issue.getIssueSteps().get(1).getStepText()));
 
     }//GEN-LAST:event_issueBoxActionPerformed
 
@@ -2291,16 +1944,16 @@ public class tracker_notesUI extends javax.swing.JFrame {
     private void wnVmComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wnVmComboBoxActionPerformed
         String stepsV6 = "Can you please dial the following code on your device as is :\n"
                 + " \n"
-                + "    *5005*86*" + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
+                + "    *5005*86*" + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
                 + "The  PLUS sign can be obtained if you press and hold down Zero";
         String stepsV7 = "Can you please dial the following code on your device as is :\n"
                 + " \n"
-                + "    *5005*86*" + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
+                + "    *5005*86*" + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
                 + "The  PLUS sign can be obtained if you press and hold down Zero";
 
         String nokia710 = "Select phone icon > > call settings and the voicemail number.\n"
                 + "\n"
-                + "Enter " + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + ", and select save.";
+                + "Enter " + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + ", and select save.";
 
         if (wnVmComboBox.getSelectedIndex() == 2) {
             windowsVMTextArea.setText(nokia710);
@@ -2320,11 +1973,11 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         String stepsV6 = "Can you please dial the following code on your device as is :\n"
                 + " \n"
-                + "    *5005*86*" + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
+                + "    *5005*86*" + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
                 + "The  PLUS sign can be obtained if you press and hold down Zero";
         String stepsV7 = "Can you please dial the following code on your device as is :\n"
                 + " \n"
-                + "    *5005*86*" + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
+                + "    *5005*86*" + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "# and then call" + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
                 + "The  PLUS sign can be obtained if you press and hold down Zero";
 
         if (iosVmComboBox.getSelectedIndex() == 0) {
@@ -2341,16 +1994,16 @@ public class tracker_notesUI extends javax.swing.JFrame {
     private void bbVmComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bbVmComboBoxActionPerformed
 
         String stepsV10 = "Can you please go to  Phone > Swipe down from the top of the screen > Settings > Voice Mail and enter"
-                + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()])
+                + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()])
                 + " Including the PLUS sign and Number 1 :";
         String stepsV6;
-        stepsV6 = "In the phone application, press the Menu key > Click Options > Click Voice Mail > Type a voice mail access number   and enter " + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
+        stepsV6 = "In the phone application, press the Menu key > Click Options > Click Voice Mail > Type a voice mail access number   and enter " + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "\nPlease enter  the asterisks, Number sign and the PLUS sign.\n"
                 + " Including the PLUS sign and Number 1 :";
         String stepsV5 = "Press the Send key (green key).\n"
                 + "Press the Menu button.( The key with blackberry logo on it)\n"
                 + "Select Options.\n"
                 + "Select Voicemail.\n"
-                + "Input " + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + " in the Access Number field. \n"
+                + "Input " + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + " in the Access Number field. \n"
                 + "Note: Make sure the + and 1 is entered before the actual number.\n"
                 + "Press the Menu.\n"
                 + "Select Save.";
@@ -2368,6 +2021,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
         copytoClipboard(blackberryVMTextArea.getText());
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    //Open the tracker to add/modify notes/scripts/settings
     private void openNotesEditorMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openNotesEditorMenuActionPerformed
         // user = System.getProperty("user.name");
         //  cmd = "java -jar C/Users/" + user + "/appdata/Roaming/<folder>/<file>.jar";
@@ -2375,7 +2029,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
         try {
             Runtime.getRuntime().exec(cmd);
         } catch (IOException ex) {
-            Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_openNotesEditorMenuActionPerformed
 
@@ -2391,9 +2045,9 @@ public class tracker_notesUI extends javax.swing.JFrame {
         try {
             populateChatPerHourTable();
         } catch (IOException ex) {
-            Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
-            Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_chatPerHourRefreshButtonActionPerformed
 
@@ -2402,21 +2056,21 @@ public class tracker_notesUI extends javax.swing.JFrame {
                 + "Press the Menu button.\n"
                 + "Select Call Settings.\n"
                 + "Select Voicemail Settings.\n"
-                + "Select Voicemail Number. Enter " + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]);
+                + "Select Voicemail Number. Enter " + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]);
 
         String steps2x = "Open Applications.\n"
                 + "Select Settings.\n"
                 + "Select Call Settings.\n"
                 + "Select Voicemail Settings.\n"
                 + "Select Voicemail Number.\n"
-                + "Enter " + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "\n"
+                + "Enter " + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]) + "\n"
                 + "Tap OK.";
 
         String steps1x = "Go to Menu.\n"
                 + "Choose Settings.\n"
                 + "Select Call Settings.\n"
                 + "Go to Voicemail.\n"
-                + "Enter " + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]);
+                + "Enter " + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]);
 
         if (androidVmComboBox.getSelectedIndex() == 0) {
             androidVmTextarea.setText(steps4x);
@@ -2436,7 +2090,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
         String wirelessHP = "Have a handset connected to the Wireless Home phone box.\n"
                 + "To program the Voicemail number dial the following code from your home phone handset:\n"
-                + " \n" + "*983*866*" + fomrateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]).substring(2) + "#";
+                + " \n" + "*983*866*" + Utilities.fomateVoiceMailRetrivalNumber(voicemailnode[vmnodebox.getSelectedIndex()]).substring(2) + "#";
 
         if (otherVmComboBox.getSelectedIndex() == 0) {
             otherVmTextArea.setText(wirelessHP);
@@ -2444,16 +2098,18 @@ public class tracker_notesUI extends javax.swing.JFrame {
     }//GEN-LAST:event_otherVmComboBoxActionPerformed
 
     private void refreshScriptsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshScriptsActionPerformed
-        try {
-            updateAllNotes();
-        } catch (IOException ex) {
-            Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        updateAllNotes();
     }//GEN-LAST:event_refreshScriptsActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         copytoClipboard(androidVmTextarea.getText());
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        //Copy NotesTextArea
+        copytoClipboard(notesTextArea.getText());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void copytoClipboard(String str) {
         StringSelection stringSelection = new StringSelection(str);
@@ -2461,75 +2117,24 @@ public class tracker_notesUI extends javax.swing.JFrame {
         clpbrd.setContents(stringSelection, null);
     }
 
-    private String fomrateVoiceMailRetrivalNumber(String text) {
+   
 
-        String[] result = text.split("-");
+   
 
-        String resultedNumber = "";
-
-        for (int x = 0; x < result.length; x++) {
-            resultedNumber += result[x];
-        }
-
-        return resultedNumber;
-
-    }
-
-    /*private String voiceMailSteps(int selectedVersion){
-        
-     String iosVmSteps[] ={"Can you please dial the following code on your device as is :\n" +
-     " \n" +
-     "    *5005*86*+16472789951# and then call"};
-     }*/
-    private String searchCustomerName(String noteText) {
-        String customername = "";
-
-        if (noteText.equals("")) {
-            return "";
-        } else {
-
-            int customernamefirstindex = noteText.lastIndexOf("Customer Name/Nom du Client:");
-
-            //System.out.println(customernamefirstindex);
-            if (customernamefirstindex > -1) {
-                // customernamefirstindex=noteText.lastIndexOf("Client name:")+10;
-
-                customername = noteText.substring(customernamefirstindex + 28);
-                String[] s = customername.split("\n");
-
-                return s[0];
-
-            }
-
-            customernamefirstindex = noteText.lastIndexOf("Client Name:");
-
-            if (customernamefirstindex > -1) {
-
-                customername = noteText.substring(customernamefirstindex + 12);
-                String[] s = customername.split("\n");
-
-                return s[0];
-
-            }
-
-            return "";
-        }
-
-    }
-
+    //Generate Scripts titles
     private void updateSubmenuTitleBox(int i) {
 
         if (i > -1 && (scripts.getMenus().get(i).getSubMenus() != null)) {
-            List<Mainmenu> mMenu = scripts.getMenus();
+            List<MainMenu> mMenu = scripts.getMenus();
 
             selectedMenu = mMenu.get(i);
-            List<Submenu> submenus = selectedMenu.getSubMenus();
-            // Sorting submenus
+            List<SubMenu> submenus = selectedMenu.getSubMenus();
+            // Sort submenus
             Collections.sort(submenus);
             String subMenuBoxText[] = new String[submenus.size()];
 
             int j = 0;
-            for (Submenu smenu : submenus) {
+            for (SubMenu smenu : submenus) {
                 subMenuBoxText[j] = smenu.getsSubMenuTitle();
                 j++;
             }
@@ -2540,16 +2145,19 @@ public class tracker_notesUI extends javax.swing.JFrame {
 
     }
 
+    //Attach Scripts to the script box upon selection
     private void updateScriptsBoxes() {
-        selectecSubmenTitle = (String) subMenuBox.getSelectedItem();
-        Submenu selectedSubmeu = null;
 
-        selectedSubmeu = selectedMenu.getSubMenus().get(subMenuBox.getSelectedIndex());
+        //Get the title for the selected menu
+        selectedSubmenTitle = (String) subMenuBox.getSelectedItem();
 
+        SubMenu selectedSubmeu = selectedMenu.getSubMenus().get(subMenuBox.getSelectedIndex());
+
+        //Set title and scripts for the english and french text area
         englishScriptlbl.setText(selectedSubmeu.getSubMenuScripts().get(0).getScriptTitle());
         englishScriptTextArea.setText(selectedSubmeu.getSubMenuScripts().get(0).getScriptText());
-        frenchScriptlbl.setText(Frenchparser.decodeToAcutesHTML(selectedSubmeu.getSubMenuScripts().get(1).getScriptTitle()));
-        frenchScriptTextArea.setText(Frenchparser.decodeToAcutesHTML(selectedSubmeu.getSubMenuScripts().get(1).getScriptText()));
+        frenchScriptlbl.setText(FrenchParser.decodeToAcutesHTML(selectedSubmeu.getSubMenuScripts().get(1).getScriptTitle()));
+        frenchScriptTextArea.setText(FrenchParser.decodeToAcutesHTML(selectedSubmeu.getSubMenuScripts().get(1).getScriptText()));
     }
 
     private void clearTabs() {
@@ -2590,7 +2198,9 @@ public class tracker_notesUI extends javax.swing.JFrame {
         }
     }
 
+    //Chat per hour tab
     private void populateChatPerHourTable() throws IOException, ParseException {
+
         Date today = new Date();
         DateFormat df = DateFormat.getInstance();
         String sd = df.format(today);
@@ -2599,13 +2209,13 @@ public class tracker_notesUI extends javax.swing.JFrame {
         int totalHours = 0, totalMinutes = 0;
         double chatPerHour = 0.00;
         String CPH, loggedInTimeString;
+
         try {
 
             totalSessions = countSessions();
 
             totallogintime = countTotalLoginTime();
 
-            //System.out.println("Total Sessions : "+totalSessions+"\nTotal Time :"+totallogintime);
             totalHours = (int) totallogintime / 60;
             totalMinutes = (int) totallogintime % 60;
             chatPerHour = (double) totalSessions / ((float) totallogintime / 60);
@@ -2617,25 +2227,31 @@ public class tracker_notesUI extends javax.swing.JFrame {
             chatPerHourTable.getModel().setValueAt(totalSessions, 0, 2);
             chatPerHourTable.getModel().setValueAt(CPH, 0, 3);
 
-            //System.out.println("Total Hours : "+ totalHours+" Total Minutes: "+totalMinutes);
-            //System.out.println(linesIterator.get(0).toString());
-            //System.out.println(logFilename);
         } catch (FileNotFoundException ex) {
             System.out.println(" file is not found");
         }
     }
 
+    //Count sessions from the log fine
     private int countSessions() throws IOException {
 
-        LineIterator lines = FileUtils.lineIterator(file);
+        LineIterator lines = FileUtils.lineIterator(logMeInLog);
         String line = "";
         Pattern sessionPattern, timePattern;
 
+        /*
+        
+         Get the unique session id from the log file
+        
+         [2014-03-16 12:48:16 AM] Session 259023046 ready
+        
+         */
         sessionPattern = Pattern.compile("Session \\d+ ready");
         timePattern = Pattern.compile("^[\\[]*.*]");
 
         Matcher matchSession, matchTime;
 
+        //Save unique session id to HashSet
         Set<String> uniqueSessions = new LinkedHashSet<String>();
         String[] splitsStrings = new String[3];
 
@@ -2658,23 +2274,35 @@ public class tracker_notesUI extends javax.swing.JFrame {
             LineIterator.closeQuietly(lines);
         }
 
-        //System.out.println(uniqueSessions.toString());
         return uniqueSessions.size();
 
     }
 
+    //Count the total Log time
     private long countTotalLoginTime() throws IOException, ParseException {
 
         double totalLoginTime = 0.00;
         long totalLoggedinHours = 0;
-        //  LineIterator linesIterator=FileUtils.lineIterator(file);
+
         List<String> lines = new ArrayList<String>();
-        lines = FileUtils.readLines(file);
+        lines = FileUtils.readLines(logMeInLog);
 
         String timeWithoutBracket = "";
 
         Pattern sessionReadyPattern, sessionLogoutPattern, timePattern;
 
+        /*
+        
+         Extract the total login time from the log file
+        
+         [2014-03-16 1:30:15 AM] Logging out
+         [2014-03-16 1:30:15 AM] Logout successful
+         [2014-03-16 3:30:35 PM] === Console started (7.3.1444) ===
+         [2014-03-16 3:30:35 PM] Host site: secure.logmeinrescue.com
+         [2014-03-16 3:30:37 PM] Console configuration has been retrieved
+         [2014-03-16 3:30:51 PM] Console ready
+        
+         */
         sessionReadyPattern = Pattern.compile("Console ready");
         sessionLogoutPattern = Pattern.compile("Logout successful");
         timePattern = Pattern.compile("^[\\[]*.*]");
@@ -2700,16 +2328,16 @@ public class tracker_notesUI extends javax.swing.JFrame {
                         if (i == 0) {
                             startTime = dateformat.parse(timeWithoutBracket);
                             startDatetime = new DateTime(startTime);
-                            //System.out.println(startDatetime.toString());
+
                         } else {
                             endTime = dateformat.parse(timeWithoutBracket);
                             endDatetime = new DateTime(endTime);
-                            //System.out.println(endDatetime.toString());
+
                         }
                     }
                 }
 
-                //Checking session ready status, and calculating start time  
+                //Check session ready status, and calculate start time  
                 matchSessionReady = sessionReadyPattern.matcher(lines.get(i));
                 if (matchSessionReady.find()) {
                     matchTime = timePattern.matcher(lines.get(i));
@@ -2720,7 +2348,7 @@ public class tracker_notesUI extends javax.swing.JFrame {
                     }
                 }
 
-                //Checking session Logout status, and calculating Logout time  
+                //Check session Logout status, and calculate Logout time  
                 matchSessionLogout = sessionLogoutPattern.matcher(lines.get(i));
                 if (matchSessionLogout.find()) {
                     matchTime = timePattern.matcher(lines.get(i));
@@ -2737,13 +2365,12 @@ public class tracker_notesUI extends javax.swing.JFrame {
                     totalLoggedinHours += duration.getStandardMinutes();
                     startDatetime = null;
                     endDatetime = null;
-                    // System.out.println(totalLoggedinHours);
 
                 }
             }
 
         } finally {
-            //  LineIterator.closeQuietly(linesIterator);
+
         }
 
         return totalLoggedinHours;
@@ -2837,14 +2464,15 @@ public class tracker_notesUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tracker_notesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -2852,16 +2480,118 @@ public class tracker_notesUI extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    new tracker_notesUI().setVisible(true);
+                    new Tracker_notesUI().setVisible(true);
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ParseException ex) {
-                    Logger.getLogger(tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Tracker_notesUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+    } //
+
+    //Generate Dynamic scripts buttons
+    private void genrateScriptsButtons() {
+        showMenuPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        for (int i = 0; i < scripts.getMenus().size(); ++i) {
+
+            //Button based on the number of the topics for the scripts
+            final JButton menuButton = new JButton(scripts.getMenus().get(i).getMenuName());
+
+            final int j = i;
+
+            menuButton.setOpaque(true);
+            //Add action for each button
+            menuButton.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+
+                    updateSubmenuTitleBox(j);
+                    updateScriptsBoxes();
+
+                }
+            });
+            showMenuPanel.add(menuButton);
+
+        }
+
+    }
+
+    //Generate Dynamic Device buttons
+    private void genrateDeviceSettingButtons() {
+
+        showDeviceSettingsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        showDeviceSettingsPanel.setPreferredSize(new Dimension(459, 150));
+        showDeviceSettingsPanel.setMaximumSize(showMenuPanel.getPreferredSize());
+
+        //Button based on the number of the devices for the settings
+        for (int i = 0; i < devices.size(); ++i) {
+
+            final JButton menuButton = new JButton(devices.get(i).getMakeName());
+
+            final int j = i;
+
+            menuButton.setOpaque(true);
+            //Add action for each button
+            menuButton.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    updateModelTitleBox(j);
+                    updateIssueTittleBox();
+                    englihIssuetTextArea.setText("");
+                    frenchIssueTextArea.setText("");
+
+                }
+            });
+
+            //Add menuButton
+            showDeviceSettingsPanel.add(menuButton);
+
+        }
+
+    }
+
+    private void updateModelTitleBox(int i) {
+
+        List<Model> mModel = devices.get(i).getModels();
+
+        String modelBoxText[] = new String[mModel.size()];
+
+        int j = 0;
+        for (Model model : mModel) {
+            modelBoxText[j] = model.getModelName();
+            j++;
+        }
+
+        selectedMakeIndex = i;
+
+        modelBox.setModel(new javax.swing.DefaultComboBoxModel(modelBoxText));
+
+    }
+
+    private void updateIssueTittleBox(int makeIndex, int modelIndex) {
+
+        String issueBoxText[] = new String[devices.get(makeIndex).getModels().get(modelIndex).getIssues().size()];
+        List<Issue> issues = devices.get(makeIndex).getModels().get(modelIndex).getIssues();
+
+        int j = 0;
+        for (Issue issue : issues) {
+            issueBoxText[j] = issue.getIssueName();
+            j++;
+        }
+
+        issueBox.setModel(new javax.swing.DefaultComboBoxModel(issueBoxText));
+
+    }
+
+    private void updateIssueTittleBox() {
+
+        issueBox.setModel(new javax.swing.DefaultComboBoxModel());
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ModelLvl;
@@ -2986,98 +2716,4 @@ public class tracker_notesUI extends javax.swing.JFrame {
     private javax.swing.JComboBox wnVmComboBox;
     // End of variables declaration//GEN-END:variables
 
-    private void genrateScriptsButtons() {
-        showMenuPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-        //showMenuPanel.setPreferredSize(new Dimension(150,128));  
-        //showMenuPanel.setMaximumSize(showMenuPanel.getPreferredSize());
-        int i = 0;
-        for (; i < scripts.getMenus().size(); ++i) {
-            final JButton menuButton = new JButton(scripts.getMenus().get(i).getMenuName());
-            final int j = i;
-            //menuButton.setContentAreaFilled(false);
-            menuButton.setOpaque(true);
-
-            menuButton.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    // menuButton.setBackground(Color.blue);
-                    updateSubmenuTitleBox(j);
-                    updateScriptsBoxes();
-                    //this.setBackground(Color.RED);
-                    //this.setOpaque(true);
-                }
-            });
-            showMenuPanel.add(menuButton);
-            //showMenuPanel.setVisible(false);
-        }
-
-    }
-
-    private void genrateDeviceSettingButtons() {
-        showDeviceSettingsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-        showDeviceSettingsPanel.setPreferredSize(new Dimension(459, 150));
-        showDeviceSettingsPanel.setMaximumSize(showMenuPanel.getPreferredSize());
-        int i = 0;
-        for (; i < devices.size(); ++i) {
-            final JButton menuButton = new JButton(devices.get(i).getMakeName());
-            final int j = i;
-            //menuButton.setContentAreaFilled(false);
-            menuButton.setOpaque(true);
-
-            menuButton.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    updateModelTitleBox(j);
-                    updateIssueTittleBox();
-                    englihIssuetTextArea.setText("");
-                    frenchIssueTextArea.setText("");
-
-                }
-            });
-            showDeviceSettingsPanel.add(menuButton);
-
-        }
-
-    }
-
-    private void updateModelTitleBox(int i) {
-
-        List<Model> mModel = devices.get(i).getModels();
-
-        String modelBoxText[] = new String[mModel.size()];
-
-        int j = 0;
-        for (Model model : mModel) {
-            modelBoxText[j] = model.getModelName();
-            j++;
-        }
-
-        selectedMakeIndex = i;
-
-        modelBox.setModel(new javax.swing.DefaultComboBoxModel(modelBoxText));
-
-    }
-
-    private void updateIssueTittleBox(int makeIndex, int modelIndex) {
-
-        String issueBoxText[] = new String[devices.get(makeIndex).getModels().get(modelIndex).getIssues().size()];
-        List<Issue> issues = devices.get(makeIndex).getModels().get(modelIndex).getIssues();
-
-        int j = 0;
-        for (Issue issue : issues) {
-            issueBoxText[j] = issue.getIssueName();
-            j++;
-        }
-
-        issueBox.setModel(new javax.swing.DefaultComboBoxModel(issueBoxText));
-
-    }
-
-    private void updateIssueTittleBox() {
-
-        issueBox.setModel(new javax.swing.DefaultComboBoxModel());
-
-    }
 }
