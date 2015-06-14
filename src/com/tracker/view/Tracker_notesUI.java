@@ -171,6 +171,8 @@ public class Tracker_notesUI extends javax.swing.JFrame {
 
         //Sort Notes List
         Collections.sort(notes);
+        
+        Collections.sort(scripts.getMenus());
 
         //Update all the scripts
         updateAllNotes();

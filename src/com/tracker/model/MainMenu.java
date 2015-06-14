@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Tahmina Khan
  */
-public class MainMenu {
+public class MainMenu implements Comparable<MainMenu> {
     
    
     private int id=-1;
@@ -67,6 +67,11 @@ public class MainMenu {
     public String toString(){
         
         return "Id is : "+id+"\n Name : "+menuName+subMenus.toString();
+    }
+
+    @Override
+    public int compareTo(MainMenu o) {
+        return getMenuName().compareToIgnoreCase(o.getMenuName());
     }
     
 }
